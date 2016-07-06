@@ -46,7 +46,7 @@ RSpec.describe CartItem do
       expect(item.total_with_vat).to be_an(Integer)
     end
 
-    it 'returns correct hash' do
+    it 'exports to a hash' do
       expect(item.to_h).to eq(
         product: {
           id: 1,
@@ -87,7 +87,7 @@ RSpec.describe CartItem do
         expect(incremented_item.total_with_vat).to eq(6048)
       end
 
-      it 'returns updated hash' do
+      it 'exports to an updated hash' do
         expect(incremented_item.to_h).to eq(
           product: {
             id: 1,
