@@ -29,7 +29,7 @@ RSpec.describe Product do
   end
 
   it 'has a vat' do
-    expect(product.vat).to be(VAT.for_category(2))
+    expect(product.vat).to be(VAT.for_category(2).value)
   end
 
   it 'has a price with vat' do
@@ -40,7 +40,7 @@ RSpec.describe Product do
     expect(product.price_with_vat).to be_an(Integer)
   end
 
-  it 'is an equivalent to a product with identical attrs' do
+  it 'is equivalent to a product with identical attrs' do
     identical_product = Product.new(
       id: 1,
       name: 'Agile Web Development with Rails 5',
@@ -50,5 +50,16 @@ RSpec.describe Product do
     expect(product).to eq(identical_product)
     expect(product).to eql(identical_product)
     expect(product).not_to equal(identical_product)
+  end
+
+  it 'produces corrent hash' do
+    expected_hash = {
+      id: 1,
+      name: 'Agile Web Development with Rails 5',
+      price: 2800,
+      price_with_vat: 3024,
+      vat: 0.08
+    }
+    expect(product.to_h).to eq(expected_hash)
   end
 end
