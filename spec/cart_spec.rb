@@ -1,10 +1,10 @@
+require './catalog'
 require './cart'
 require './product'
-require './products'
 
-RANDOM_BOOK = Products.find(3)
-ANOTHER_BOOK = Products.find(5)
-TSHIRT = Products.find(6)
+RANDOM_BOOK = Catalog.find(3)
+ANOTHER_BOOK = Catalog.find(5)
+TSHIRT = Catalog.find(6)
 
 RSpec.describe Cart do
   context 'when empty' do

@@ -1,7 +1,7 @@
 require_relative './product'
 
-class Products
-  @db = [{
+class Catalog
+  @db = Hash[[{
     id: 1,
     name: 'Agile Web Development with Rails 5',
     price: 2800,
@@ -31,9 +31,13 @@ class Products
     name: 'Pragmatic T-Shirt',
     price: 900,
     vat_category_id: 1
-  }].map { |attrs| Product.new(attrs) }.freeze
+  }].map { |attrs| [attrs[:id], Product.new(attrs)] }].freeze
 
   def self.find(id)
-    @db.select { |product| id == product.id }.first
+    @db[id]
+  end
+
+  def self.has?(id)
+    @db.key? id
   end
 end

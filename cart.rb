@@ -1,5 +1,5 @@
+require_relative './catalog'
 require_relative './cart_item'
-require_relative './products'
 
 class Cart
   def initialize
@@ -7,14 +7,15 @@ class Cart
   end
 
   def add(product_id)
-    product = Products.find(product_id) || raise(ArgumentError)
-    item = @items[product.id] ||= CartItem.new(product.id)
+    raise(ArgumentError) unless Catalog.has? product_id
+    item = @items[product_id] ||= CartItem.new(product_id)
     item.increment
     item.quantity
   end
 
   def remove(product_id)
-    item = @items[product_id] || raise(ArgumentError)
+    raise(ArgumentError) unless @items.key? product_id
+    item = @items[product_id]
     item.decrement
     @items.delete(product_id) if item.quantity <= 0
     item.quantity

@@ -1,8 +1,8 @@
-require_relative './products'
+require_relative './catalog'
 
 class CartItem
   def initialize(product_id)
-    @product = Products.find(product_id) || raise(ArgumentError)
+    @product = Catalog.find(product_id) || raise(ArgumentError)
     @quantity = 0
   end
 
