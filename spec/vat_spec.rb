@@ -5,6 +5,10 @@ INVALID_CATEGORY_ID = 13
 NIL_CATEGORY_ID = 0
 
 RSpec.describe VAT do
+  it 'cannot be created' do
+    expect { VAT.new }.to raise_error(NoMethodError)
+  end
+
   context 'when asked for valid category' do
     subject(:vat) { VAT.for_category(VALID_CATEGORY_ID) }
 

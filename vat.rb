@@ -1,25 +1,27 @@
 class VAT
-  @values = {
-    0 => 0.00,
-    1 => 0.23,
-    2 => 0.08
-  }.freeze
+  class << self
+    private
 
-  def self.for_category(id)
-    VAT.new(@values[id] || @values[0])
+    def new(*args)
+      super(*args)
+    end
+
+    public
+
+    def for_category(id)
+      @instances[id] || @instances[0]
+    end
   end
-
-  attr_reader :value
-
-  def eql?(other)
-    other.instance_of?(self.class) && other.value == @value
-  end
-
-  alias == eql?
-
-  private
 
   def initialize(value)
     @value = value
   end
+
+  @instances = {
+    0 => new(0.00),
+    1 => new(0.23),
+    2 => new(0.08)
+  }.freeze
+
+  attr_reader :value
 end
