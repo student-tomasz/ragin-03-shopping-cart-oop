@@ -1,12 +1,9 @@
-require './catalog'
 require './cart'
-require './product'
-
-RANDOM_BOOK = Catalog.find(3)
-ANOTHER_BOOK = Catalog.find(5)
-TSHIRT = Catalog.find(6)
 
 RSpec.describe Cart do
+  let(:book_id) { 3 }
+  let(:shirt_id) { 6 }
+
   context 'when empty' do
     subject(:cart) { Cart.new }
 
@@ -35,7 +32,7 @@ RSpec.describe Cart do
   context 'with a book and a doubled t-shirt' do
     subject(:cart) do
       cart = Cart.new
-      [RANDOM_BOOK, TSHIRT, TSHIRT].each { |product| cart.add(product.id) }
+      [book_id, shirt_id, shirt_id].each { |product_id| cart.add(product_id) }
       cart
     end
 
@@ -60,7 +57,10 @@ RSpec.describe Cart do
     end
 
     context 'after removing one t-shirt' do
-      subject(:one_shirt_cart) { cart.remove TSHIRT.id; cart }
+      subject(:one_shirt_cart) do
+        cart.remove(shirt_id)
+        cart
+      end
 
       it 'still contains two unique items' do
         expect(one_shirt_cart.items.length).to eq(2)
@@ -75,18 +75,21 @@ RSpec.describe Cart do
       end
 
       context 'after removing another t-shirt' do
-        subject(:shirtless_cart) { one_shirt_cart.remove TSHIRT.id; cart }
+        subject(:shirtless_cart) do
+          one_shirt_cart.remove(shirt_id)
+          one_shirt_cart
+        end
 
         it 'contains one unique item' do
           expect(shirtless_cart.items.length).to eq(1)
         end
 
         it 'has a total equal to the book\' price' do
-          expect(shirtless_cart.total).to eq(RANDOM_BOOK.price)
+          expect(shirtless_cart.total).to eq(2400)
         end
 
         it 'has a total with vat equal to the book\' price with vat' do
-          expect(shirtless_cart.total_with_vat).to eq(RANDOM_BOOK.price_with_vat)
+          expect(shirtless_cart.total_with_vat).to eq(2592)
         end
       end
     end
