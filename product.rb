@@ -15,7 +15,7 @@ class Product
   end
 
   def price_with_vat
-    (@price * (1.0 + self.vat.value)).ceil
+    (@price * (1.0 + vat.value)).ceil
   end
 
   def eql?(other)
