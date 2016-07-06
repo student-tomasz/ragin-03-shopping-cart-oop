@@ -1,7 +1,8 @@
 require_relative '../product'
 
 RSpec.describe Product do
-  subject(:product) do Product.new(
+  subject(:product) do
+    Product.new(
       id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
@@ -11,17 +12,32 @@ RSpec.describe Product do
 
   it { is_expected.to be }
 
-  it do
-    is_expected.to have_attributes(
-      id: 1,
-      name: 'Agile Web Development with Rails 5',
-      price: 2800,
-      vat_category_id: 2
-    )
+  it 'has an id' do
+    expect(product.id).to eq(1)
   end
 
-  it 'has a price attr in cents' do
+  it 'has a name' do
+    expect(product.name).to eq('Agile Web Development with Rails 5')
+  end
+
+  it 'has a price' do
+    expect(product.price).to eq(2800)
+  end
+
+  it 'has a price in cents' do
     expect(product.price).to be_an(Integer)
+  end
+
+  it 'has a vat' do
+    expect(product.vat).to be(VAT.for_category(2))
+  end
+
+  it 'has a price with vat' do
+    expect(product.price_with_vat).to eq(3024)
+  end
+
+  it 'has a price with vat in cents' do
+    expect(product.price_with_vat).to be_an(Integer)
   end
 
   it 'is an equivalent to a product with identical attrs' do
