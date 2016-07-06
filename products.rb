@@ -1,5 +1,7 @@
+require_relative './product'
+
 class Products
-  DB = [{
+  @db = [{
     id: 1,
     name: 'Agile Web Development with Rails 5',
     price: 2800,
@@ -32,8 +34,6 @@ class Products
   }].map { |attrs| Product.new(attrs) }.freeze
 
   def self.find(id)
-    product = DB.select { |product| id == product.id }.first
-    throw ArgumentError if product.nil?
-    product
+    @db.select { |product| id == product.id }.first
   end
 end

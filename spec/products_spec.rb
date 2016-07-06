@@ -15,8 +15,8 @@ RSpec.describe Products do
   end
 
   context 'when asked for non-existing product' do
-    it 'raises error' do
-      expect { Products.find(-1) }.to raise_error ArgumentError
+    it 'returns nil' do
+      expect(Products.find(-1)).to be_nil
     end
   end
 end
