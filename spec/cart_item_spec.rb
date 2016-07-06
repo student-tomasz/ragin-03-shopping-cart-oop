@@ -14,8 +14,8 @@ RSpec.describe CartItem do
 
     subject(:item) { CartItem.new(product_id) }
 
-    it 'contains the passed product' do
-      expect(item.product.id).to eq(product_id)
+    it 'contains the passed product id' do
+      expect(item.product_id).to eq(product_id)
     end
 
     it 'has zero quantity' do
