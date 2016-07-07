@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
-group :development, :test do
-  gem 'rspec', '~> 3.5'
-  gem 'fuubar', '~> 2.0'
-  gem 'rubocop'
+ruby '2.3.1'
+
+group :development do
   gem 'pry'
+  gem 'rubocop'
+end
+
+group :test do
+  gem 'rspec', '~> 3.5'
 end
