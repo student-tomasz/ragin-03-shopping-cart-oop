@@ -1,65 +1,120 @@
 require 'lib/product'
 
 RSpec.describe Product do
-  subject(:product) do
-    Product.new(
+  let(:attributes) do
+    {
       id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
       vat_category_id: 2
-    )
-  end
-
-  it { is_expected.to be }
-
-  it 'has an id' do
-    expect(product.id).to eq(1)
-  end
-
-  it 'has a name' do
-    expect(product.name).to eq('Agile Web Development with Rails 5')
-  end
-
-  it 'has a price' do
-    expect(product.price).to eq(2800)
-  end
-
-  it 'has a price in cents' do
-    expect(product.price).to be_an(Integer)
-  end
-
-  it 'has a vat' do
-    expect(product.vat).to be(VAT.for_category(2).value)
-  end
-
-  it 'has a price with vat' do
-    expect(product.price_with_vat).to eq(3024)
-  end
-
-  it 'has a price with vat in cents' do
-    expect(product.price_with_vat).to be_an(Integer)
-  end
-
-  it 'is equivalent to a product with identical attrs' do
-    identical_product = Product.new(
-      id: 1,
-      name: 'Agile Web Development with Rails 5',
-      price: 2800,
-      vat_category_id: 2
-    )
-    expect(product).to eq(identical_product)
-    expect(product).to eql(identical_product)
-    expect(product).not_to equal(identical_product)
-  end
-
-  it 'produces corrent hash' do
-    expected_hash = {
-      id: 1,
-      name: 'Agile Web Development with Rails 5',
-      price: 2800,
-      price_with_vat: 3024,
-      vat: 0.08
     }
-    expect(product.to_h).to eq(expected_hash)
+  end
+
+  subject(:product) { Product.new(attributes) }
+
+  it { is_expected.to be } # the bestests test
+
+  it 'requires an id' do
+    attributes[:id] = nil
+    expect { Product.new(attributes) }.to raise_error(ArgumentError)
+  end
+
+  it 'requires a name' do
+    attributes[:name] = nil
+    expect { Product.new(attributes) }.to raise_error(ArgumentError)
+  end
+
+  it 'requires a name to be a string' do
+    attributes[:name] = 3
+    expect { Product.new(attributes) }.to raise_error(ArgumentError)
+  end
+
+  it 'requires a name to be at least 2 characters long' do
+    attributes[:name] = 3
+    expect { Product.new(attributes) }.to raise_error(ArgumentError)
+  end
+
+  it 'requires a price to be an integer' do
+    attributes[:price] = 12.34
+    expect { Product.new(attributes) }.to raise_error(ArgumentError)
+  end
+
+  it 'requires a price to be positive number' do
+    attributes[:price] = -12
+    expect { Product.new(attributes) }.to raise_error(ArgumentError)
+  end
+
+  it 'requires a vat category id to be exactly either 1 or 2' do
+    attributes[:vat_category_id] = 1
+    expect { Product.new(attributes) }.not_to raise_error
+    attributes[:vat_category_id] = 2
+    expect { Product.new(attributes) }.not_to raise_error
+    attributes[:vat_category_id] = 3
+    expect { Product.new(attributes) }.to raise_error(ArgumentError)
+  end
+
+  describe '#id' do
+    subject { product.id }
+
+    it { is_expected.not_to be_nil }
+  end
+
+  describe '#name' do
+    subject { product.name }
+
+    it { is_expected.not_to be_nil }
+    it { is_expected.to be_a(String) }
+    it { is_expected.not_to be_empty }
+  end
+
+  describe '#price' do
+    subject { product.price }
+
+    it { is_expected.not_to be_nil }
+    it { is_expected.to be_a(Integer) }
+    it { is_expected.to eq(2800) }
+  end
+
+  describe '#price_with_vat' do
+    subject { product.price_with_vat }
+
+    it { is_expected.not_to be_nil }
+    it { is_expected.to be_a(Integer) }
+    it { is_expected.to eq(3024) }
+  end
+
+  describe '#vat' do
+    subject { product.vat }
+
+    it { is_expected.not_to be_nil }
+    it { is_expected.to be_a(Float) }
+    it { is_expected.to eq(0.08) }
+  end
+
+  describe '#eql?' do
+    it 'returns true for an identical product' do
+      identical_product = Product.new(
+        id: 1,
+        name: 'Agile Web Development with Rails 5',
+        price: 2800,
+        vat_category_id: 2
+      )
+      expect(product).to eq(identical_product)
+      expect(product).to eql(identical_product)
+      expect(product).not_to equal(identical_product)
+    end
+  end
+
+  describe '#to_h' do
+    it 'returns a filled hash' do
+      expected_hash = {
+        id: 1,
+        name: 'Agile Web Development with Rails 5',
+        price: 2800,
+        price_with_vat: 3024,
+        vat: 0.08
+      }
+      expect(product.to_h).to eq(expected_hash)
+    end
   end
 end
