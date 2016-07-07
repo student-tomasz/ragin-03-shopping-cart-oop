@@ -1,20 +1,8 @@
-require 'lib/product'
+require 'lib/inventory_item'
 
-class CartItem
+class CartItem < InventoryItem
   def initialize(product)
-    raise(ArgumentError) if product.nil?
-    @product = product
-    @quantity = 0
-  end
-
-  attr_reader :product, :quantity
-
-  def increment
-    @quantity += 1
-  end
-
-  def decrement
-    @quantity -= 1 unless @quantity <= 0
+    super(product, 0)
   end
 
   def total

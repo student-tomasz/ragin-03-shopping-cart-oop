@@ -1,11 +1,9 @@
-require 'lib/cart_item'
+require 'lib/inventory_item'
 require 'lib/product'
 
-RSpec.describe CartItem do
-  context 'when created for an invalid product' do
-    it 'raises error' do
-      expect { CartItem.new(nil) }.to raise_error(ArgumentError)
-    end
+RSpec.describe InventoryItem do
+  it 'requires a product' do
+    expect { InventoryItem.new(nil) }.to raise_error(ArgumentError)
   end
 
   context 'when created for a valid product' do
@@ -18,7 +16,27 @@ RSpec.describe CartItem do
       )
     end
 
-    subject(:item) { CartItem.new(product) }
+    subject(:item) { InventoryItem.new(product) }
+
+    describe '#new' do
+      it 'accepts an optional quantity' do
+        expect { InventoryItem.new(product, 1) }.not_to raise_error
+      end
+
+      it 'requires a not-nil quantity' do
+        expect { InventoryItem.new(product, nil) }.to raise_error(ArgumentError)
+      end
+
+      it 'requires an integer quantity' do
+        expect { InventoryItem.new(product, 'a') }.to raise_error(ArgumentError)
+        expect { InventoryItem.new(product, 1.2) }.to raise_error(ArgumentError)
+      end
+
+      it 'requires a quantity > 0' do
+        expect { InventoryItem.new(product, -1) }.to raise_error(ArgumentError)
+        expect { InventoryItem.new(product, 0) }.not_to raise_error
+      end
+    end
 
     describe '#product' do
       it 'returns the passed product' do
@@ -46,34 +64,10 @@ RSpec.describe CartItem do
       end
     end
 
-    describe '#total' do
-      it 'returns 0' do
-        expect(item.total).to eq(0)
-      end
-
-      it 'is an integer' do
-        expect(item.total).to be_an(Integer)
-      end
-    end
-
-    describe '#total_with_vat' do
-      it 'returns 0' do
-        expect(item.total_with_vat).to eq(0)
-      end
-
-      it 'is an integer' do
-        expect(item.total_with_vat).to be_an(Integer)
-      end
-    end
-
     describe '#to_h' do
       it 'returns a zeroed hash' do
         expect(item.to_h).to include(:product)
-        expect(item.to_h).to include(
-          quantity: 0,
-          total: 0,
-          total_with_vat: 0
-        )
+        expect(item.to_h).to include(quantity: 0)
       end
     end
 
@@ -114,34 +108,10 @@ RSpec.describe CartItem do
         end
       end
 
-      describe '#total' do
-        it 'returns doubled item\'s price' do
-          expect(incremented_item.total).to eq(5600)
-        end
-
-        it 'is an integer' do
-          expect(incremented_item.total).to be_an(Integer)
-        end
-      end
-
-      describe '#total_with_vat' do
-        it 'returns doubled item\' price with vat' do
-          expect(incremented_item.total_with_vat).to eq(6048)
-        end
-
-        it 'is an integer' do
-          expect(incremented_item.total_with_vat).to be_an(Integer)
-        end
-      end
-
       describe '#to_h' do
         it 'returns a filled hash' do
           expect(incremented_item.to_h).to include(:product)
-          expect(incremented_item.to_h).to include(
-            quantity: 2,
-            total: 5600,
-            total_with_vat: 6048
-          )
+          expect(incremented_item.to_h).to include(quantity: 2)
         end
       end
     end
