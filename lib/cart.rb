@@ -1,4 +1,3 @@
-require 'lib/catalog'
 require 'lib/cart_item'
 
 class Cart
@@ -6,24 +5,24 @@ class Cart
     @items = {}
   end
 
-  def add(product_id)
-    raise(ArgumentError) unless Catalog.has? product_id
-    product = Catalog.find(product_id)
+  def items
+    @items.values
+  end
+
+  def add(product)
+    raise(ArgumentError) if product.nil?
     item = @items[product.id] ||= CartItem.new(product)
     item.increment
     item.quantity
   end
 
-  def remove(product_id)
-    raise(ArgumentError) unless @items.key? product_id
-    item = @items[product_id]
+  def remove(product)
+    raise(ArgumentError) if product.nil?
+    raise(ArgumentError) unless @items.key? product.id
+    item = @items[product.id]
     item.decrement
-    @items.delete(product_id) if item.quantity <= 0
+    @items.delete(product.id) if item.quantity <= 0
     item.quantity
-  end
-
-  def items
-    @items.values
   end
 
   def total
