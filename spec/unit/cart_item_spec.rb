@@ -30,12 +30,16 @@ RSpec.describe CartItem do
       it 'returns 0' do
         expect(item.quantity).to eq(0)
       end
+    end
 
-      it 'increments by 1' do
+    describe '#increment' do
+      it 'increments by 1 to a quantity of 1' do
         expect { item.increment }
           .to change { item.quantity }.from(0).to(1)
       end
+    end
 
+    describe '#decrement' do
       it 'doesn\'t decrement below 0' do
         expect { item.decrement }
           .not_to change { item.quantity }
@@ -92,16 +96,27 @@ RSpec.describe CartItem do
         end
       end
 
-      describe '#quantity' do
-        it 'returns 2' do
-          expect(incremented_item.quantity).to eq(2)
+      describe '#increment' do
+        it 'increments by 1 to a quantity of 3' do
+          expect { incremented_item.increment }
+            .to change { incremented_item.quantity }
+            .from(2)
+            .to(3)
         end
+      end
 
-        it 'decrements by 1' do
+      describe '#decrement' do
+        it 'decrements by 1 to a quantity of 1' do
           expect { incremented_item.decrement }
             .to change { incremented_item.quantity }
             .from(2)
             .to(1)
+        end
+      end
+
+      describe '#quantity' do
+        it 'returns 2' do
+          expect(incremented_item.quantity).to eq(2)
         end
       end
 
