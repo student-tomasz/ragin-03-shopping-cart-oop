@@ -1,7 +1,8 @@
 require 'lib/cart_item'
 
 class Cart
-  def initialize
+  def initialize(inventory)
+    @inventory = inventory
     @items = {}
   end
 
@@ -11,6 +12,7 @@ class Cart
 
   def add(product)
     raise(ArgumentError) if product.nil?
+    return nil unless @inventory.reserve(product)
     item = @items[product.id] ||= CartItem.new(product)
     item.increment
     item.quantity
@@ -18,7 +20,7 @@ class Cart
 
   def remove(product)
     raise(ArgumentError) if product.nil?
-    raise(ArgumentError) unless @items.key? product.id
+    raise(ArgumentError) unless @items.key?(product.id)
     item = @items[product.id]
     item.decrement
     @items.delete(product.id) if item.quantity <= 0

@@ -1,7 +1,17 @@
 require 'lib/cart'
+require 'lib/inventory'
 require 'lib/product'
 
 RSpec.describe Cart do
+  let(:no_book) do
+    Product.new(
+      id: 1,
+      name: 'Agile Web Development with Rails 5',
+      price: 2800,
+      vat_category_id: 2
+    )
+  end
+
   let(:book) do
     Product.new(
       id: 3,
@@ -20,22 +30,48 @@ RSpec.describe Cart do
     )
   end
 
-  subject(:cart) { Cart.new }
+  let(:not_in_offer_book) do
+    Product.new(
+      id: 1234,
+      name: 'Harry Potter and the Goblet of Fire',
+      price: 1900,
+      vat_category_id: 2
+    )
+  end
+
+  let(:catalog) { [no_book, book, shirt] }
+  let(:quantities) { { no_book.id => 0, book.id => 1, shirt.id => 2 } }
+  let(:inventory) { Inventory.new(catalog, quantities) }
+
+  subject(:cart) { Cart.new(inventory) }
 
   describe '#add' do
     it 'raises error for nil' do
       expect { cart.add(nil) }.to raise_error(ArgumentError)
     end
 
-    it 'returns new quantity of the product' do
-      expect(cart.add(book)).to eq(1)
+    it 'raises error for a product not in offer' do
+      expect { cart.add(not_in_offer_book) }.to raise_error(ArgumentError)
     end
 
-    it 'increments quantity of the product by 1' do
-      expect(cart.add(book)).to eq(1)
-      expect(cart.add(book)).to eq(2)
-      expect(cart.add(book)).to eq(3)
-      expect(cart.add(shirt)).to eq(1)
+    context 'when asked for an available product' do
+      it 'returns its new quantity' do
+        expect(cart.add(book)).to eq(1)
+      end
+
+      it 'increments its quantity by 1' do
+        expect(cart.add(book)).to eq(1)
+        expect(cart.add(shirt)).to eq(1)
+        expect(cart.add(shirt)).to eq(2)
+      end
+    end
+
+    context 'when asked for an unavailable product' do
+      it 'returns nil' do
+        expect(cart.add(no_book)).to be_nil
+        expect(cart.add(book)).to eq(1)
+        expect(cart.add(book)).to be_nil
+      end
     end
   end
 
@@ -54,10 +90,10 @@ RSpec.describe Cart do
     end
 
     it 'decrements quantity of the product by 1' do
-      cart.add(book)
-      cart.add(book)
-      expect(cart.remove(book)).to eq(1)
-      expect(cart.remove(book)).to eq(0)
+      cart.add(shirt)
+      cart.add(shirt)
+      expect(cart.remove(shirt)).to eq(1)
+      expect(cart.remove(shirt)).to eq(0)
     end
 
     it 'forgets about the product when decremented to 0' do
@@ -68,7 +104,7 @@ RSpec.describe Cart do
   end
 
   context 'when empty' do
-    subject(:cart) { Cart.new }
+    subject(:cart) { Cart.new(Inventory.new([])) }
 
     describe '#items' do
       it 'is empty' do
@@ -110,7 +146,7 @@ RSpec.describe Cart do
 
   context 'with a book and a doubled t-shirt' do
     subject(:cart) do
-      cart = Cart.new
+      cart = Cart.new(inventory)
       [book, shirt, shirt].each { |product| cart.add(product) }
       cart
     end
