@@ -8,7 +8,8 @@ class Cart
 
   def add(product_id)
     raise(ArgumentError) unless Catalog.has? product_id
-    item = @items[product_id] ||= CartItem.new(product_id)
+    product = Catalog.find(product_id)
+    item = @items[product.id] ||= CartItem.new(product)
     item.increment
     item.quantity
   end

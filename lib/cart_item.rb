@@ -1,17 +1,13 @@
-require 'lib/catalog'
+require 'lib/product'
 
 class CartItem
-  def initialize(product_id)
-    raise ArgumentError unless Catalog.has? product_id
-    @product_id = product_id
+  def initialize(product)
+    raise(ArgumentError) if product.nil?
+    @product = product
     @quantity = 0
   end
 
-  attr_reader :product_id, :quantity
-
-  def product
-    @product ||= Catalog.find @product_id
-  end
+  attr_reader :product, :quantity
 
   def increment
     @quantity += 1
@@ -22,16 +18,16 @@ class CartItem
   end
 
   def total
-    product.price * @quantity
+    @total ||= product.price * @quantity
   end
 
   def total_with_vat
-    product.price_with_vat * @quantity
+    @total_with_vat ||= product.price_with_vat * @quantity
   end
 
   def to_h
     {
-      product: product.to_h,
+      product: @product.to_h,
       quantity: @quantity,
       total: total,
       total_with_vat: total_with_vat
