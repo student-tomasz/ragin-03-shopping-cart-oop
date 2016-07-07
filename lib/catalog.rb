@@ -1,4 +1,4 @@
-require_relative './product'
+require 'lib/product'
 
 class Catalog
   @db = Hash[[{

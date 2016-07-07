@@ -1,4 +1,4 @@
-require_relative './catalog'
+require 'lib/catalog'
 
 class CartItem
   def initialize(product_id)

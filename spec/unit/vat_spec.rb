@@ -1,4 +1,4 @@
-require_relative '../vat'
+require 'lib/vat'
 
 VALID_CATEGORY_ID = 1
 INVALID_CATEGORY_ID = 13

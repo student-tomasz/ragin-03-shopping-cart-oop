@@ -1,4 +1,4 @@
-require_relative '../product'
+require 'lib/product'
 
 RSpec.describe Product do
   subject(:product) do

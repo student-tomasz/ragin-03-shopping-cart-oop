@@ -1,4 +1,4 @@
-require './cart'
+require 'lib/cart'
 
 RSpec.describe Cart do
   let(:book_id) { 3 }

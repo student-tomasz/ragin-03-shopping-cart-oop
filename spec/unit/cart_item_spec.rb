@@ -1,4 +1,4 @@
-require_relative '../cart_item'
+require 'lib/cart_item'
 
 RSpec.describe CartItem do
   context 'when created for an invalid product' do

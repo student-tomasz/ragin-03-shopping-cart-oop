@@ -1,5 +1,5 @@
-require_relative '../catalog'
-require_relative '../product'
+require 'lib/catalog'
+require 'lib/product'
 
 RSpec.describe Catalog do
   context 'when asked for existing product' do

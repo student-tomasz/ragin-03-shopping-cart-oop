@@ -1,4 +1,4 @@
-require_relative './vat'
+require 'lib/vat'
 
 class Product
   def initialize(id:, name:, price:, vat_category_id:)

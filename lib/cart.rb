@@ -1,5 +1,5 @@
-require_relative './catalog'
-require_relative './cart_item'
+require 'lib/catalog'
+require 'lib/cart_item'
 
 class Cart
   def initialize
