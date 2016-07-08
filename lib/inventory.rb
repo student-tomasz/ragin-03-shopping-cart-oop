@@ -4,7 +4,7 @@ class Inventory
   def initialize(catalog, quantities = Hash.new(0))
     raise(ArgumentError) if catalog.nil?
     @items = Hash[
-      catalog.map do |product|
+      catalog.all.map do |product|
         [product.id, InventoryItem.new(product, quantities[product.id])]
       end
     ]

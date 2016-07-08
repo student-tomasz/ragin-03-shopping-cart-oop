@@ -3,7 +3,7 @@ require 'lib/inventory'
 require 'lib/product'
 
 RSpec.describe Cart do
-  let(:no_book) do
+  let(:unavailable_book) do
     Product.new(
       id: 1,
       name: 'Agile Web Development with Rails 5',
@@ -12,7 +12,7 @@ RSpec.describe Cart do
     )
   end
 
-  let(:book) do
+  let(:available_book) do
     Product.new(
       id: 3,
       name: 'Web Development with Clojure, Second Edition',
@@ -21,7 +21,7 @@ RSpec.describe Cart do
     )
   end
 
-  let(:shirt) do
+  let(:tshirt) do
     Product.new(
       id: 6,
       name: 'Pragmatic T-Shirt',
@@ -39,8 +39,18 @@ RSpec.describe Cart do
     )
   end
 
-  let(:catalog) { [no_book, book, shirt] }
-  let(:quantities) { { no_book.id => 0, book.id => 1, shirt.id => 2 } }
+  let(:catalog) do
+    Catalog.new([unavailable_book, available_book, tshirt])
+  end
+
+  let(:quantities) do
+    {
+      unavailable_book.id => 0,
+      available_book.id => 1,
+      tshirt.id => 2
+    }
+  end
+
   let(:inventory) { Inventory.new(catalog, quantities) }
 
   subject(:cart) { Cart.new(inventory) }
@@ -56,21 +66,21 @@ RSpec.describe Cart do
 
     context 'when asked for an available product' do
       it 'returns its new quantity' do
-        expect(cart.add(book)).to eq(1)
+        expect(cart.add(available_book)).to eq(1)
       end
 
       it 'increments its quantity by 1' do
-        expect(cart.add(book)).to eq(1)
-        expect(cart.add(shirt)).to eq(1)
-        expect(cart.add(shirt)).to eq(2)
+        expect(cart.add(available_book)).to eq(1)
+        expect(cart.add(tshirt)).to eq(1)
+        expect(cart.add(tshirt)).to eq(2)
       end
     end
 
     context 'when asked for an unavailable product' do
       it 'returns nil' do
-        expect(cart.add(no_book)).to be_nil
-        expect(cart.add(book)).to eq(1)
-        expect(cart.add(book)).to be_nil
+        expect(cart.add(unavailable_book)).to be_nil
+        expect(cart.add(available_book)).to eq(1)
+        expect(cart.add(available_book)).to be_nil
       end
     end
   end
@@ -81,30 +91,33 @@ RSpec.describe Cart do
     end
 
     it 'raises error when product not in cart' do
-      expect { cart.remove(shirt) }.to raise_error(ArgumentError)
+      expect { cart.remove(tshirt) }.to raise_error(ArgumentError)
     end
 
     it 'returns new quantity of the product' do
-      cart.add(book)
-      expect(cart.remove(book)).to eq(0)
+      cart.add(available_book)
+      expect(cart.remove(available_book)).to eq(0)
     end
 
     it 'decrements quantity of the product by 1' do
-      cart.add(shirt)
-      cart.add(shirt)
-      expect(cart.remove(shirt)).to eq(1)
-      expect(cart.remove(shirt)).to eq(0)
+      cart.add(tshirt)
+      cart.add(tshirt)
+      expect(cart.remove(tshirt)).to eq(1)
+      expect(cart.remove(tshirt)).to eq(0)
     end
 
     it 'forgets about the product when decremented to 0' do
-      cart.add(book)
-      cart.remove(book)
-      expect(cart.items).not_to include(book)
+      cart.add(available_book)
+      cart.remove(available_book)
+      expect(cart.items).not_to include(available_book)
     end
   end
 
   context 'when empty' do
-    subject(:cart) { Cart.new(Inventory.new([])) }
+    subject(:cart) do
+      empty_catalog = Catalog.new
+      Cart.new(Inventory.new(empty_catalog))
+    end
 
     describe '#items' do
       it 'is empty' do
@@ -147,7 +160,7 @@ RSpec.describe Cart do
   context 'with a book and a doubled t-shirt' do
     subject(:cart) do
       cart = Cart.new(inventory)
-      [book, shirt, shirt].each { |product| cart.add(product) }
+      [available_book, tshirt, tshirt].each { |product| cart.add(product) }
       cart
     end
 
@@ -183,7 +196,7 @@ RSpec.describe Cart do
 
     context 'with one t-shirt removed' do
       subject(:one_shirt_cart) do
-        cart.remove(shirt)
+        cart.remove(tshirt)
         cart
       end
 
@@ -211,7 +224,7 @@ RSpec.describe Cart do
 
       context 'with another shirt removed' do
         subject(:shirtless_cart) do
-          one_shirt_cart.remove(shirt)
+          one_shirt_cart.remove(tshirt)
           one_shirt_cart
         end
 

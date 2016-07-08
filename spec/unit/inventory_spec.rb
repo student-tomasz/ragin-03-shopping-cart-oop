@@ -2,35 +2,84 @@ require 'lib/catalog'
 require 'lib/inventory'
 
 RSpec.describe Inventory do
-  it 'requires z list of products' do
+  let(:available_book) do
+    Product.new(
+      id: 1,
+      name: 'Agile Web Development with Rails 5',
+      price: 2800,
+      vat_category_id: 2
+    )
+  end
+
+  let(:unavailable_book) do
+    Product.new(
+      id: 3,
+      name: 'Web Development with Clojure, Second Edition',
+      price: 2400,
+      vat_category_id: 2
+    )
+  end
+
+  let(:one_left_book) do
+    Product.new(
+      id: 4,
+      name: 'Serverless Single Page Apps',
+      price: 3000,
+      vat_category_id: 2
+    )
+  end
+
+  let(:tshirt) do
+    Product.new(
+      id: 6,
+      name: 'Pragmatic T-Shirt',
+      price: 900,
+      vat_category_id: 1
+    )
+  end
+
+  let(:quantities) do
+    {
+      available_book.id => 19,
+      unavailable_book.id => 0,
+      one_left_book.id => 1,
+      tshirt => 2
+    }
+  end
+
+  it 'requires a list of products' do
     expect { Inventory.new(nil) }.to raise_error(ArgumentError)
   end
 
   context 'when stocked with books only' do
-    let(:quantities) { { 1 => 19, 2 => 8, 3 => 24, 4 => 1, 5 => 0 } }
+    let(:catalog) do
+      Catalog.new([available_book, unavailable_book, one_left_book])
+    end
 
-    let(:shirt) { Catalog.find(6) }
-    let(:books) { (1..5).to_a.map { |id| Catalog.find(id) } }
-    let(:available_book) { books.select { |book| book.id == 1 }.first }
-    let(:unavailable_book) { books.select { |book| book.id == 5 }.first }
-    let(:one_left_book) { books.select { |book| book.id == 4 }.first }
-
-    subject(:inventory) { Inventory.new(books, quantities) }
+    subject(:inventory) do
+      Inventory.new(catalog, quantities)
+    end
 
     describe '#quantity' do
       context 'when asked about a shirt' do
         it 'raises error' do
-          expect { inventory.quantity(shirt) }.to raise_error(ArgumentError)
+          expect { inventory.quantity(tshirt) }.to raise_error(ArgumentError)
         end
       end
 
-      context 'when asked about an available book ' do
+      context 'when asked about an available book' do
         it 'returns > 0' do
           expect(inventory.quantity(available_book)).to be > 0
         end
       end
 
-      context 'when asked about an unavailable book ' do
+      context 'when asked about last one left book' do
+        it 'returns > 0' do
+          expect(inventory.quantity(one_left_book)).to eq(1)
+        end
+      end
+
+      context 'when asked about an unavailable book' do
         it 'returns 0' do
           expect(inventory.quantity(unavailable_book)).to eq(0)
         end
@@ -40,17 +89,17 @@ RSpec.describe Inventory do
     describe '#available?' do
       context 'when asked about a shirt' do
         it 'raises error' do
-          expect { inventory.available?(shirt) }.to raise_error(ArgumentError)
+          expect { inventory.available?(tshirt) }.to raise_error(ArgumentError)
         end
       end
 
-      context 'when asked about an available book ' do
+      context 'when asked about an available book' do
         it 'returns true' do
           expect(inventory.available?(available_book)).to be true
         end
       end
 
-      context 'when asked about an unavailable book ' do
+      context 'when asked about an unavailable book' do
         it 'returns false' do
           expect(inventory.available?(unavailable_book)).to be false
         end
@@ -60,7 +109,7 @@ RSpec.describe Inventory do
     describe '#reserve' do
       context 'when asked for a shirt' do
         it 'raises error' do
-          expect { inventory.reserve(shirt) }.to raise_error(ArgumentError)
+          expect { inventory.reserve(tshirt) }.to raise_error(ArgumentError)
         end
       end
 
@@ -101,7 +150,7 @@ RSpec.describe Inventory do
     describe '#release' do
       context 'when asked for a shirt' do
         it 'raises error' do
-          expect { inventory.release(shirt) }.to raise_error(ArgumentError)
+          expect { inventory.release(tshirt) }.to raise_error(ArgumentError)
         end
       end
 

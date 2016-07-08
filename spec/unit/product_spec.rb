@@ -14,43 +14,45 @@ RSpec.describe Product do
 
   it { is_expected.to be } # the bestests test
 
-  it 'requires an id' do
-    attributes[:id] = nil
-    expect { Product.new(attributes) }.to raise_error(ArgumentError)
-  end
+  describe '#new' do
+    it 'requires an id' do
+      attributes[:id] = nil
+      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+    end
 
-  it 'requires a name' do
-    attributes[:name] = nil
-    expect { Product.new(attributes) }.to raise_error(ArgumentError)
-  end
+    it 'requires a name' do
+      attributes[:name] = nil
+      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+    end
 
-  it 'requires a name to be a string' do
-    attributes[:name] = 3
-    expect { Product.new(attributes) }.to raise_error(ArgumentError)
-  end
+    it 'requires a name to be a string' do
+      attributes[:name] = 3
+      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+    end
 
-  it 'requires a name to be at least 2 characters long' do
-    attributes[:name] = 3
-    expect { Product.new(attributes) }.to raise_error(ArgumentError)
-  end
+    it 'requires a name to be at least 2 characters long' do
+      attributes[:name] = 3
+      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+    end
 
-  it 'requires a price to be an integer' do
-    attributes[:price] = 12.34
-    expect { Product.new(attributes) }.to raise_error(ArgumentError)
-  end
+    it 'requires a price to be an integer' do
+      attributes[:price] = 12.34
+      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+    end
 
-  it 'requires a price to be positive number' do
-    attributes[:price] = -12
-    expect { Product.new(attributes) }.to raise_error(ArgumentError)
-  end
+    it 'requires a price to be positive number' do
+      attributes[:price] = -12
+      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+    end
 
-  it 'requires a vat category id to be exactly either 1 or 2' do
-    attributes[:vat_category_id] = 1
-    expect { Product.new(attributes) }.not_to raise_error
-    attributes[:vat_category_id] = 2
-    expect { Product.new(attributes) }.not_to raise_error
-    attributes[:vat_category_id] = 3
-    expect { Product.new(attributes) }.to raise_error(ArgumentError)
+    it 'requires a vat category id to be exactly either 1 or 2' do
+      attributes[:vat_category_id] = 1
+      expect { Product.new(attributes) }.not_to raise_error
+      attributes[:vat_category_id] = 2
+      expect { Product.new(attributes) }.not_to raise_error
+      attributes[:vat_category_id] = 3
+      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+    end
   end
 
   describe '#id' do

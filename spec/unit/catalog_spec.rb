@@ -1,38 +1,97 @@
 require 'lib/catalog'
 require 'lib/product'
 
+RSpec.shared_examples 'an empty catalog' do
+  describe '#all' do
+    it 'contains no products' do
+      expect(catalog.all).to be_empty
+    end
+  end
+end
+
 RSpec.describe Catalog do
-  context 'when asked for existing product' do
-    let(:product_id) { 1 }
+  let(:book) do
+    Product.new(
+      id: 1,
+      name: 'Agile Web Development with Rails 5',
+      price: 2800,
+      vat_category_id: 2
+    )
+  end
 
-    it 'confirms the product exists' do
-      expect(Catalog.has?(product_id)).to be_truthy
-    end
+  let(:tshirt) do
+    Product.new(
+      id: 6,
+      name: 'Pragmatic T-Shirt',
+      price: 900,
+      vat_category_id: 1
+    )
+  end
 
-    it 'returns a product' do
-      expect(Catalog.find(product_id)).to be_a(Product)
-    end
+  let(:not_in_offer_book) do
+    Product.new(
+      id: 3,
+      name: 'Web Development with Clojure, Second Edition',
+      price: 2400,
+      vat_category_id: 2
+    )
+  end
 
-    it 'returns the product' do
-      identical_product = Product.new(
-        id: 1,
-        name: 'Agile Web Development with Rails 5',
-        price: 2800,
-        vat_category_id: 2
-      )
-      expect(Catalog.find(product_id)).to eq(identical_product)
+  context 'when created with a nil' do
+    it 'raises an error' do
+      expect { Catalog.new(nil) }.to raise_error(ArgumentError)
     end
   end
 
-  context 'when asked for non-existing product' do
-    let(:product_id) { -1 }
+  context 'when created with an empty list of products' do
+    subject(:catalog) { Catalog.new([]) }
 
-    it 'denies the product exists' do
-      expect(Catalog.has?(product_id)).to be_falsey
+    it_behaves_like 'an empty catalog'
+  end
+
+  context 'when created without any argument' do
+    subject(:catalog) { Catalog.new }
+
+    it_behaves_like 'an empty catalog'
+  end
+
+  context 'when created with a list of a book and a tshirt' do
+    subject(:catalog) { Catalog.new([book, tshirt]) }
+
+    describe '#all' do
+      it 'contains 2 products' do
+        expect(catalog.all.length).to eq(2)
+      end
+
+      it 'contains the book' do
+        expect(catalog.all).to include(book)
+      end
+
+      it 'contains the tshirt' do
+        expect(catalog.all).to include(tshirt)
+      end
+
+      it 'doesn\'t contain a book not in the offer' do
+        expect(catalog.all).not_to include(not_in_offer_book)
+      end
     end
 
-    it 'returns nil' do
-      expect(Catalog.find(product_id)).to be_nil
+    describe '#find' do
+      context 'when given an id of a product in the offer' do
+        subject(:found_product) { catalog.find(book.id) }
+
+        it 'returns the product' do
+          expect(found_product).to eq(book)
+        end
+      end
+
+      context 'when given an id of a product not in the offer' do
+        subject(:found_product) { catalog.find(not_in_offer_book.id) }
+
+        it 'returns nil' do
+          expect(found_product).to be(nil)
+        end
+      end
     end
   end
 end
