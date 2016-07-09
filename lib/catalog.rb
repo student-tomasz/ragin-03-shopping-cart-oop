@@ -1,9 +1,10 @@
 require 'lib/product'
+require_relative 'services/index_by'
 
 class Catalog
   def initialize(products = [])
-    raise(ArgumentError) if products.nil?
-    @products = Hash[products.map { |product| [product.id, product] }].freeze
+    raise ArgumentError unless products
+    @products = IndexBy.new.call(products, &:id)
   end
 
   def find(id)
