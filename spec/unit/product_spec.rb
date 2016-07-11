@@ -3,16 +3,13 @@ require_relative '../../lib/product'
 RSpec.describe Shop::Product do
   let(:attributes) do
     {
-      id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
-      vat_category_id: 2
+      vat_id: 2
     }
   end
 
   subject(:product) { Shop::Product.new(attributes) }
-
-  it { is_expected.to be } # the bestests test
 
   describe '#new' do
     it 'requires an id' do
@@ -46,12 +43,13 @@ RSpec.describe Shop::Product do
     end
 
     it 'requires a vat category id to be exactly either 1 or 2' do
-      attributes[:vat_category_id] = 1
+      attributes[:vat_id] = 1
       expect { Shop::Product.new(attributes) }.not_to raise_error
-      attributes[:vat_category_id] = 2
+      attributes[:vat_id] = 2
       expect { Shop::Product.new(attributes) }.not_to raise_error
-      attributes[:vat_category_id] = 3
-      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
+      attributes[:vat_id] = 3
+      expect { Shop::Product.new(attributes) }
+        .to raise_error(Shop::VAT::UnknownCategoryError)
     end
   end
 
@@ -99,7 +97,7 @@ RSpec.describe Shop::Product do
         id: 1,
         name: 'Agile Web Development with Rails 5',
         price: 2800,
-        vat_category_id: 2
+        vat_id: 2
       )
       expect(product).to eq(identical_product)
       expect(product).to eql(identical_product)

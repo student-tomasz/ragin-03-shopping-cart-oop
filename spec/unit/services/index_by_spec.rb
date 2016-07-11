@@ -6,7 +6,7 @@ RSpec.describe Shop::IndexBy do
       id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
-      vat_category_id: 2
+      vat_id: 2
     )
   end
 
@@ -15,7 +15,7 @@ RSpec.describe Shop::IndexBy do
       id: 3,
       name: 'Web Development with Clojure, Second Edition',
       price: 2400,
-      vat_category_id: 2
+      vat_id: 2
     )
   end
 
@@ -24,7 +24,7 @@ RSpec.describe Shop::IndexBy do
       id: 6,
       name: 'Pragmatic T-Shirt',
       price: 900,
-      vat_category_id: 1
+      vat_id: 1
     )
   end
 

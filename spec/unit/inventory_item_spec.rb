@@ -12,7 +12,7 @@ RSpec.describe Shop::InventoryItem do
         id: 1,
         name: 'Agile Web Development with Rails 5',
         price: 2800,
-        vat_category_id: 2
+        vat_id: 2
       )
     end
 

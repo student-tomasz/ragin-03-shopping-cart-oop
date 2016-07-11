@@ -5,22 +5,18 @@ module Shop
   class Product
     include Validator
 
-    def initialize(id:, name:, price: 0, vat_category_id: 1)
+    def initialize(id:, name:, price: 0, vat_id: 1)
       @id = id
       @name = name
       @price = price
-      @vat_category_id = vat_category_id
+      @vat = VAT.for_category(vat_id).value
       raise ArgumentError unless valid?
     end
 
-    attr_reader :id, :name, :price
-
-    def vat
-      VAT.for_category(@vat_category_id).value
-    end
+    attr_reader :id, :name, :price, :vat
 
     def price_with_vat
-      (@price * (1.0 + vat)).ceil
+      (price * (1.0 + vat)).ceil
     end
 
     def to_h

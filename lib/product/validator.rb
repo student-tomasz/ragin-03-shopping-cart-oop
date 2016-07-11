@@ -7,7 +7,7 @@ module Shop
         id_valid? &&
           name_valid? &&
           price_valid? &&
-          vat_category_id_valid?
+          vat_valid?
       end
 
       def id_valid?
@@ -22,10 +22,8 @@ module Shop
         !@price.nil? && @price.is_a?(Integer) && @price >= 0
       end
 
-      def vat_category_id_valid?
-        !@vat_category_id.nil? &&
-          @vat_category_id.is_a?(Integer) &&
-          @vat_category_id.between?(1, 2)
+      def vat_valid?
+        !vat.nil? && vat.is_a?(Float)
       end
     end
   end

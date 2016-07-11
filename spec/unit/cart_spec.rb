@@ -9,7 +9,7 @@ RSpec.describe Shop::Cart do
       id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
-      vat_category_id: 2
+      vat_id: 2
     )
   end
 
@@ -18,7 +18,7 @@ RSpec.describe Shop::Cart do
       id: 3,
       name: 'Web Development with Clojure, Second Edition',
       price: 2400,
-      vat_category_id: 2
+      vat_id: 2
     )
   end
 
@@ -27,7 +27,7 @@ RSpec.describe Shop::Cart do
       id: 5,
       name: 'Deploying with JRuby 9k',
       price: 1600,
-      vat_category_id: 2
+      vat_id: 2
     )
   end
 
@@ -36,7 +36,7 @@ RSpec.describe Shop::Cart do
       id: 6,
       name: 'Pragmatic T-Shirt',
       price: 900,
-      vat_category_id: 1
+      vat_id: 1
     )
   end
 
@@ -45,7 +45,7 @@ RSpec.describe Shop::Cart do
       id: 1234,
       name: 'Harry Potter and the Goblet of Fire',
       price: 1900,
-      vat_category_id: 2
+      vat_id: 2
     )
   end
 
