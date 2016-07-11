@@ -12,7 +12,6 @@ end
 RSpec.describe Shop::Catalog do
   let(:book) do
     Shop::Product.new(
-      id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
       vat_id: 2
@@ -21,7 +20,6 @@ RSpec.describe Shop::Catalog do
 
   let(:tshirt) do
     Shop::Product.new(
-      id: 6,
       name: 'Pragmatic T-Shirt',
       price: 900,
       vat_id: 1
@@ -30,7 +28,6 @@ RSpec.describe Shop::Catalog do
 
   let(:not_in_offer_book) do
     Shop::Product.new(
-      id: 3,
       name: 'Web Development with Clojure, Second Edition',
       price: 2400,
       vat_id: 2

@@ -9,7 +9,6 @@ RSpec.describe Shop::InventoryItem do
   context 'when created for a valid product' do
     let(:product) do
       Shop::Product.new(
-        id: 1,
         name: 'Agile Web Development with Rails 5',
         price: 2800,
         vat_id: 2

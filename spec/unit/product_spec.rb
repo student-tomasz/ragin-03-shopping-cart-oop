@@ -3,7 +3,6 @@ require_relative '../../lib/product'
 RSpec.describe Shop::Product do
   let(:params) do
     {
-      id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
       vat_id: 2
@@ -17,12 +16,6 @@ RSpec.describe Shop::Product do
       it "raises #{error_type.name.split('::').last}" do
         expect { Shop::Product.new(invalid_params) }.to raise_error(error_type)
       end
-    end
-
-    context 'with nil id' do
-      let(:invalid_params) { params.merge!(id: nil) }
-
-      include_examples 'raises error', Shop::Product::InvalidIdError
     end
 
     context "with invalid name that's" do
@@ -112,32 +105,30 @@ RSpec.describe Shop::Product do
     it { is_expected.to eq(0.08) }
   end
 
-  describe '#==' do
-    context 'with other product of the same params' do
-      let(:other_product) { Shop::Product.new(params) }
+  describe 'equality using' do
+    let(:other_product) { Shop::Product.new(params.merge!(id: product.id)) }
 
-      it 'returns true' do
-        expect(product).to be == other_product
+    describe '#==' do
+      context 'with other product of the same id' do
+        it 'returns true' do
+          expect(product == other_product).to be true
+        end
       end
     end
-  end
 
-  describe '#eql?' do
-    context 'with other product of the same params' do
-      let(:other_product) { Shop::Product.new(params) }
-
-      it 'returns true' do
-        expect(product).to eql(other_product)
+    describe '#eql?' do
+      context 'with other product of the same id' do
+        it 'returns true' do
+          expect(product.eql?(other_product)).to be true
+        end
       end
     end
-  end
 
-  describe '#equal?' do
-    context 'with other product of the same params' do
-      let(:other_product) { Shop::Product.new(params) }
-
-      it 'returns false' do
-        expect(product).not_to equal(other_product)
+    describe '#equal?' do
+      context 'with other product of the same id' do
+        it 'returns false' do
+          expect(product.equal?(other_product)).to be false
+        end
       end
     end
   end
@@ -145,7 +136,6 @@ RSpec.describe Shop::Product do
   describe '#to_h' do
     let(:expected_hash) do
       {
-        id: 1,
         name: 'Agile Web Development with Rails 5',
         price: 2800,
         price_with_vat: 3024,
@@ -154,7 +144,8 @@ RSpec.describe Shop::Product do
     end
 
     it 'returns a filled hash' do
-      expect(product.to_h).to eq(expected_hash)
+      expect(product.to_h).to include(:id)
+      expect(product.to_h).to include(expected_hash)
     end
   end
 end

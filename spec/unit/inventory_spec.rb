@@ -4,7 +4,6 @@ require_relative '../../lib/inventory'
 RSpec.describe Shop::Inventory do
   let(:available_book) do
     Shop::Product.new(
-      id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
       vat_id: 2
@@ -13,7 +12,6 @@ RSpec.describe Shop::Inventory do
 
   let(:unavailable_book) do
     Shop::Product.new(
-      id: 3,
       name: 'Web Development with Clojure, Second Edition',
       price: 2400,
       vat_id: 2
@@ -22,7 +20,6 @@ RSpec.describe Shop::Inventory do
 
   let(:one_left_book) do
     Shop::Product.new(
-      id: 4,
       name: 'Serverless Single Page Apps',
       price: 3000,
       vat_id: 2
@@ -31,7 +28,6 @@ RSpec.describe Shop::Inventory do
 
   let(:tshirt) do
     Shop::Product.new(
-      id: 6,
       name: 'Pragmatic T-Shirt',
       price: 900,
       vat_id: 1
@@ -43,7 +39,7 @@ RSpec.describe Shop::Inventory do
       available_book.id => 19,
       unavailable_book.id => 0,
       one_left_book.id => 1,
-      tshirt => 2
+      tshirt.id => 2
     }
   end
 
