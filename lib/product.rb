@@ -1,18 +1,18 @@
 require 'securerandom'
 
 require_relative './vat'
+
+require_relative './product/exceptions'
 require_relative './product/validator'
 
 module Shop
   class Product
-    include Validator
-
     def initialize(id: nil, name:, price: 0, vat_id: 1)
       @id = id || next_id
       @name = name
       @price = price
       @vat = VAT.for_category(vat_id).value
-      validate!
+      Validator.new(self).validate!
     end
 
     attr_reader :id, :name, :price, :vat

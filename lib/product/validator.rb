@@ -1,32 +1,38 @@
-require_relative './exceptions'
-
 module Shop
   class Product
-    module Validator
-      include Exceptions
+    include Exceptions
+    
+    class Validator
+      def initialize(product)
+        @product = product
+      end
+
+      def validate!
+        raise Exceptions::InvalidIdError unless id_valid?
+        raise Exceptions::InvalidNameError unless name_valid?
+        raise Exceptions::InvalidPriceError unless price_valid?
+        raise Exceptions::InvalidVatError unless vat_valid?
+      end
 
       private
 
-      def validate!
-        raise InvalidIdError unless id_valid?
-        raise InvalidNameError unless name_valid?
-        raise InvalidPriceError unless price_valid?
-        raise InvalidVatError unless vat_valid?
-      end
-
       def id_valid?
-        !@id.nil?
+        id = @product.id
+        !id.nil?
       end
 
       def name_valid?
-        !@name.nil? && @name.is_a?(String) && !@name.empty? && @name.length >= 2
+        name = @product.name
+        !name.nil? && name.is_a?(String) && !name.empty? && name.length >= 2
       end
 
       def price_valid?
-        !@price.nil? && @price.is_a?(Integer) && @price >= 0
+        price = @product.price
+        !price.nil? && price.is_a?(Integer) && price >= 0
       end
 
       def vat_valid?
+        vat = @product.vat
         !vat.nil? && vat.is_a?(Float)
       end
     end
