@@ -1,13 +1,17 @@
+require_relative './exceptions'
+
 module Shop
   class Product
     module Validator
+      include Exceptions
+
       private
 
-      def valid?
-        id_valid? &&
-          name_valid? &&
-          price_valid? &&
-          vat_valid?
+      def validate!
+        raise InvalidIdError unless id_valid?
+        raise InvalidNameError unless name_valid?
+        raise InvalidPriceError unless price_valid?
+        raise InvalidVatError unless vat_valid?
       end
 
       def id_valid?
@@ -15,7 +19,7 @@ module Shop
       end
 
       def name_valid?
-        !@name.nil? && @name.is_a?(String) && !@name.empty?
+        !@name.nil? && @name.is_a?(String) && !@name.empty? && @name.length >= 2
       end
 
       def price_valid?

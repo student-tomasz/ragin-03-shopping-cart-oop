@@ -1,55 +1,76 @@
 require_relative '../../lib/product'
 
 RSpec.describe Shop::Product do
-  let(:attributes) do
+  let(:params) do
     {
+      id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
       vat_id: 2
     }
   end
 
-  subject(:product) { Shop::Product.new(attributes) }
+  subject(:product) { Shop::Product.new(params) }
 
   describe '#new' do
-    it 'requires an id' do
-      attributes[:id] = nil
-      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
+    shared_examples 'raises error' do |error_type|
+      it "raises #{error_type.name.split('::').last}" do
+        expect { Shop::Product.new(invalid_params) }.to raise_error(error_type)
+      end
     end
 
-    it 'requires a name' do
-      attributes[:name] = nil
-      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
+    context 'with nil id' do
+      let(:invalid_params) { params.merge!(id: nil) }
+
+      include_examples 'raises error', Shop::Product::InvalidIdError
     end
 
-    it 'requires a name to be a string' do
-      attributes[:name] = 3
-      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
+    context "with invalid name that's" do
+      context 'nil' do
+        let(:invalid_params) { params.merge!(name: nil) }
+
+        include_examples 'raises error', Shop::Product::InvalidNameError
+      end
+
+      context 'not a string' do
+        let(:invalid_params) { params.merge!(name: 1234) }
+
+        include_examples 'raises error', Shop::Product::InvalidNameError
+      end
+
+      context 'shorter than 2 characters' do
+        let(:invalid_params) { params.merge!(name: 'a') }
+
+        include_examples 'raises error', Shop::Product::InvalidNameError
+      end
     end
 
-    it 'requires a name to be at least 2 characters long' do
-      attributes[:name] = 3
-      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
+    context "with invalid price that's" do
+      context 'not an integer' do
+        let(:invalid_params) { params.merge!(price: 12.34) }
+
+        include_examples 'raises error', Shop::Product::InvalidPriceError
+      end
+
+      context 'not a positive number' do
+        let(:invalid_params) { params.merge!(price: -1200) }
+
+        include_examples 'raises error', Shop::Product::InvalidPriceError
+      end
     end
 
-    it 'requires a price to be an integer' do
-      attributes[:price] = 12.34
-      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
-    end
+    context 'with invalid vat' do
+      context 'nil' do
+        let(:invalid_params) { params.merge!(vat_id: nil) }
 
-    it 'requires a price to be positive number' do
-      attributes[:price] = -12
-      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
-    end
+        include_examples 'raises error', Shop::VAT::UnknownCategoryError
+      end
 
-    it 'requires a vat category id to be exactly either 1 or 2' do
-      attributes[:vat_id] = 1
-      expect { Shop::Product.new(attributes) }.not_to raise_error
-      attributes[:vat_id] = 2
-      expect { Shop::Product.new(attributes) }.not_to raise_error
-      attributes[:vat_id] = 3
-      expect { Shop::Product.new(attributes) }
-        .to raise_error(Shop::VAT::UnknownCategoryError)
+      context 'unknown category' do
+        let(:invalid_params) { params.merge!(vat_id: -1) }
+
+        include_examples 'raises error', Shop::VAT::UnknownCategoryError
+      end
     end
   end
 

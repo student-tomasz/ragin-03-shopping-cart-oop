@@ -10,7 +10,7 @@ module Shop
       @name = name
       @price = price
       @vat = VAT.for_category(vat_id).value
-      raise ArgumentError unless valid?
+      validate!
     end
 
     attr_reader :id, :name, :price, :vat
