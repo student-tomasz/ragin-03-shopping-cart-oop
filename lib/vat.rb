@@ -1,5 +1,7 @@
 module Shop
   class VAT
+    class UnknownCategoryError < StandardError; end
+
     class << self
       private
 
@@ -10,20 +12,20 @@ module Shop
       public
 
       def for_category(id)
-        @instances[id] || @instances[0]
+        raise UnknownCategoryError unless @instances.key?(id)
+        @instances[id]
       end
     end
+
+    attr_reader :value
 
     def initialize(value)
       @value = value
     end
 
     @instances = {
-      0 => new(0.00),
       1 => new(0.23),
       2 => new(0.08)
     }.freeze
-
-    attr_reader :value
   end
 end
