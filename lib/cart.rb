@@ -27,6 +27,12 @@ class Cart
     item.quantity
   end
 
+  def quantity(product)
+    raise ArgumentError unless product
+    return 0 unless @items.key?(product.id)
+    @items[product.id].quantity
+  end
+
   def total
     @items.values.reduce(0) { |a, e| a + e.total }
   end

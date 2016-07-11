@@ -21,6 +21,15 @@ RSpec.describe Cart do
     )
   end
 
+  let(:one_left_book) do
+    Product.new(
+      id: 5,
+      name: 'Deploying with JRuby 9k',
+      price: 1600,
+      vat_category_id: 2
+    )
+  end
+
   let(:tshirt) do
     Product.new(
       id: 6,
@@ -40,13 +49,14 @@ RSpec.describe Cart do
   end
 
   let(:catalog) do
-    Catalog.new([unavailable_book, available_book, tshirt])
+    Catalog.new([unavailable_book, available_book, one_left_book, tshirt])
   end
 
   let(:quantities) do
     {
       unavailable_book.id => 0,
-      available_book.id => 1,
+      available_book.id => 19,
+      one_left_book.id => 1,
       tshirt.id => 2
     }
   end
@@ -54,6 +64,37 @@ RSpec.describe Cart do
   let(:inventory) { Inventory.new(catalog, quantities) }
 
   subject(:cart) { Cart.new(inventory) }
+
+  shared_examples 'increments quantity by 1' do |product_id|
+    let(:product) { catalog.find(product_id) }
+
+    it 'increments quantity by 1' do
+      expect { subject.add(product) }
+        .to change { subject.quantity(product) }.by(1)
+    end
+  end
+
+  shared_examples 'decrements quantity by 1' do |product_id|
+    let(:product) { catalog.find(product_id) }
+
+    it 'decrements quantity by 1' do
+      expect { subject.remove(product) }
+        .to change { subject.quantity(product) }.by(-1)
+    end
+  end
+
+  shared_examples 'doesn\'t change quantity' do |product_id|
+    let(:product) { catalog.find(product_id) }
+
+    it 'returns nil' do
+      expect(subject.add(product)).to be_nil
+    end
+
+    it 'doesn\'t change quantity' do
+      expect { subject.add(product) }
+        .not_to change { subject.quantity(product) }
+    end
+  end
 
   describe '#add' do
     it 'raises error for nil' do
@@ -65,51 +106,56 @@ RSpec.describe Cart do
     end
 
     context 'when asked for an available product' do
-      it 'returns its new quantity' do
-        expect(cart.add(available_book)).to eq(1)
-      end
-
-      it 'increments its quantity by 1' do
-        expect(cart.add(available_book)).to eq(1)
-        expect(cart.add(tshirt)).to eq(1)
-        expect(cart.add(tshirt)).to eq(2)
-      end
+      include_examples 'increments quantity by 1', 3 # available_book.id
     end
 
     context 'when asked for an unavailable product' do
-      it 'returns nil' do
-        expect(cart.add(unavailable_book)).to be_nil
-        expect(cart.add(available_book)).to eq(1)
-        expect(cart.add(available_book)).to be_nil
+      include_examples 'doesn\'t change quantity', 1 # unavailable_book.id
+    end
+
+    context 'when asked for a one left product' do
+      include_examples 'increments quantity by 1', 5 # :one_left_book.id
+
+      context 'when asked again' do
+        subject(:cart_with_book) do
+          cart.add(one_left_book)
+          cart
+        end
+
+        include_examples 'doesn\'t change quantity', 5 # :one_left_book.id
       end
     end
   end
 
   describe '#remove' do
+    subject(:filled_cart) do
+      cart.add(one_left_book)
+      cart.add(tshirt)
+      cart.add(tshirt)
+      cart
+    end
+
     it 'raises error for nil' do
-      expect { cart.remove(nil) }.to raise_error(ArgumentError)
+      expect { filled_cart.remove(nil) }.to raise_error(ArgumentError)
     end
 
     it 'raises error when product not in cart' do
-      expect { cart.remove(tshirt) }.to raise_error(ArgumentError)
+      expect { filled_cart.remove(available_book) }.to raise_error(ArgumentError)
     end
 
-    it 'returns new quantity of the product' do
-      cart.add(available_book)
-      expect(cart.remove(available_book)).to eq(0)
-    end
+    include_examples 'decrements quantity by 1', 6 # tshirt.id
 
-    it 'decrements quantity of the product by 1' do
-      cart.add(tshirt)
-      cart.add(tshirt)
-      expect(cart.remove(tshirt)).to eq(1)
-      expect(cart.remove(tshirt)).to eq(0)
-    end
+    context 'when asked for one left product' do
+      subject(:bookless_cart) { filled_cart.remove(one_left_book); filled_cart }
 
-    it 'forgets about the product when decremented to 0' do
-      cart.add(available_book)
-      cart.remove(available_book)
-      expect(cart.items).not_to include(available_book)
+      it 'decrements quantity from 1 to 0' do
+        expect { filled_cart.remove(one_left_book) }
+          .to change { filled_cart.quantity(one_left_book) }.from(1).to(0)
+      end
+
+      it 'deletes the product' do
+        expect(bookless_cart.items).not_to include(one_left_book)
+      end
     end
   end
 
