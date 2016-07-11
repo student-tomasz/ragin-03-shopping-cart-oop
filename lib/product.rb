@@ -6,11 +6,11 @@ module Shop
     include Validator
 
     def initialize(id:, name:, price: 0, vat_category_id: 1)
-      raise(ArgumentError) unless are_valid?(id: id, name: name, price: price, vat_category_id: vat_category_id)
       @id = id
       @name = name
       @price = price
       @vat_category_id = vat_category_id
+      raise ArgumentError unless valid?
     end
 
     attr_reader :id, :name, :price
