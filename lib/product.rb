@@ -1,9 +1,9 @@
-require_relative './product_validator'
 require_relative './vat'
+require_relative './product/validator'
 
 module Shop
   class Product
-    include ProductValidator
+    include Validator
 
     def initialize(id:, name:, price: 0, vat_category_id: 1)
       raise(ArgumentError) unless are_valid?(id: id, name: name, price: price, vat_category_id: vat_category_id)
