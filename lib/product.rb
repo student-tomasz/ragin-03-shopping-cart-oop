@@ -21,16 +21,16 @@ module Shop
 
     def to_h
       {
-        id: @id,
-        name: @name,
-        price: @price,
+        id: id,
+        name: name,
+        price: price,
         price_with_vat: price_with_vat,
         vat: vat
       }
     end
 
     def eql?(other)
-      other.instance_of?(self.class) && other.id == @id
+      other.instance_of?(self.class) && other.id == id
     end
 
     alias == eql?
