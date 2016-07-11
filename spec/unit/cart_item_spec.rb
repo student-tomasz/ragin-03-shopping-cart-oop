@@ -1,16 +1,16 @@
-require 'lib/cart_item'
-require 'lib/product'
+require_relative '../../lib/cart_item'
+require_relative '../../lib/product'
 
-RSpec.describe CartItem do
+RSpec.describe Shop::CartItem do
   context 'when created for an invalid product' do
     it 'raises error' do
-      expect { CartItem.new(nil) }.to raise_error(ArgumentError)
+      expect { Shop::CartItem.new(nil) }.to raise_error(ArgumentError)
     end
   end
 
   context 'when created for a valid product' do
     let(:product) do
-      Product.new(
+      Shop::Product.new(
         id: 1,
         name: 'Agile Web Development with Rails 5',
         price: 2800,
@@ -18,7 +18,7 @@ RSpec.describe CartItem do
       )
     end
 
-    subject(:item) { CartItem.new(product) }
+    subject(:item) { Shop::CartItem.new(product) }
 
     describe '#product' do
       it 'returns the passed product' do

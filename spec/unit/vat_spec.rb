@@ -4,13 +4,13 @@ VALID_CATEGORY_ID = 1
 INVALID_CATEGORY_ID = 13
 NIL_CATEGORY_ID = 0
 
-RSpec.describe VAT do
+RSpec.describe Shop::VAT do
   it 'cannot be created' do
-    expect { VAT.new }.to raise_error(NoMethodError)
+    expect { Shop::VAT.new }.to raise_error(NoMethodError)
   end
 
   context 'when asked for valid category' do
-    subject(:vat) { VAT.for_category(VALID_CATEGORY_ID) }
+    subject(:vat) { Shop::VAT.for_category(VALID_CATEGORY_ID) }
 
     it 'returns a VAT' do
       expect(vat).to be
@@ -26,14 +26,14 @@ RSpec.describe VAT do
   end
 
   context 'when asked for invalid category' do
-    subject(:vat) { VAT.for_category(INVALID_CATEGORY_ID) }
+    subject(:vat) { Shop::VAT.for_category(INVALID_CATEGORY_ID) }
 
     it 'still returns a VAT' do
       expect(vat).to be
     end
 
     it 'returns a nil VAT' do
-      expect(vat).to eq(VAT.for_category(NIL_CATEGORY_ID))
+      expect(vat).to eq(Shop::VAT.for_category(NIL_CATEGORY_ID))
     end
   end
 end

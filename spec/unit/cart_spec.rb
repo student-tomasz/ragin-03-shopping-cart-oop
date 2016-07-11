@@ -1,10 +1,11 @@
-require 'lib/cart'
-require 'lib/inventory'
-require 'lib/product'
+require_relative '../../lib/cart'
+require_relative '../../lib/catalog'
+require_relative '../../lib/inventory'
+require_relative '../../lib/product'
 
-RSpec.describe Cart do
+RSpec.describe Shop::Cart do
   let(:unavailable_book) do
-    Product.new(
+    Shop::Product.new(
       id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
@@ -13,7 +14,7 @@ RSpec.describe Cart do
   end
 
   let(:available_book) do
-    Product.new(
+    Shop::Product.new(
       id: 3,
       name: 'Web Development with Clojure, Second Edition',
       price: 2400,
@@ -22,7 +23,7 @@ RSpec.describe Cart do
   end
 
   let(:one_left_book) do
-    Product.new(
+    Shop::Product.new(
       id: 5,
       name: 'Deploying with JRuby 9k',
       price: 1600,
@@ -31,7 +32,7 @@ RSpec.describe Cart do
   end
 
   let(:tshirt) do
-    Product.new(
+    Shop::Product.new(
       id: 6,
       name: 'Pragmatic T-Shirt',
       price: 900,
@@ -40,7 +41,7 @@ RSpec.describe Cart do
   end
 
   let(:not_in_offer_book) do
-    Product.new(
+    Shop::Product.new(
       id: 1234,
       name: 'Harry Potter and the Goblet of Fire',
       price: 1900,
@@ -49,7 +50,7 @@ RSpec.describe Cart do
   end
 
   let(:catalog) do
-    Catalog.new([unavailable_book, available_book, one_left_book, tshirt])
+    Shop::Catalog.new([unavailable_book, available_book, one_left_book, tshirt])
   end
 
   let(:quantities) do
@@ -61,9 +62,9 @@ RSpec.describe Cart do
     }
   end
 
-  let(:inventory) { Inventory.new(catalog, quantities) }
+  let(:inventory) { Shop::Inventory.new(catalog, quantities) }
 
-  subject(:cart) { Cart.new(inventory) }
+  subject(:cart) { Shop::Cart.new(inventory) }
 
   shared_examples 'increments quantity by 1' do |product_id|
     let(:product) { catalog.find(product_id) }
@@ -161,8 +162,8 @@ RSpec.describe Cart do
 
   context 'when empty' do
     subject(:cart) do
-      empty_catalog = Catalog.new
-      Cart.new(Inventory.new(empty_catalog))
+      empty_catalog = Shop::Catalog.new
+      Shop::Cart.new(Shop::Inventory.new(empty_catalog))
     end
 
     describe '#items' do
@@ -205,7 +206,7 @@ RSpec.describe Cart do
 
   context 'with a book and a doubled t-shirt' do
     subject(:cart) do
-      cart = Cart.new(inventory)
+      cart = Shop::Cart.new(inventory)
       [available_book, tshirt, tshirt].each { |product| cart.add(product) }
       cart
     end

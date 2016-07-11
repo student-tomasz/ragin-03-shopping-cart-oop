@@ -1,9 +1,9 @@
-require 'lib/catalog'
-require 'lib/inventory'
+require_relative '../../lib/catalog'
+require_relative '../../lib/inventory'
 
-RSpec.describe Inventory do
+RSpec.describe Shop::Inventory do
   let(:available_book) do
-    Product.new(
+    Shop::Product.new(
       id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
@@ -12,7 +12,7 @@ RSpec.describe Inventory do
   end
 
   let(:unavailable_book) do
-    Product.new(
+    Shop::Product.new(
       id: 3,
       name: 'Web Development with Clojure, Second Edition',
       price: 2400,
@@ -21,7 +21,7 @@ RSpec.describe Inventory do
   end
 
   let(:one_left_book) do
-    Product.new(
+    Shop::Product.new(
       id: 4,
       name: 'Serverless Single Page Apps',
       price: 3000,
@@ -30,7 +30,7 @@ RSpec.describe Inventory do
   end
 
   let(:tshirt) do
-    Product.new(
+    Shop::Product.new(
       id: 6,
       name: 'Pragmatic T-Shirt',
       price: 900,
@@ -48,16 +48,16 @@ RSpec.describe Inventory do
   end
 
   it 'requires a list of products' do
-    expect { Inventory.new(nil) }.to raise_error(ArgumentError)
+    expect { Shop::Inventory.new(nil) }.to raise_error(ArgumentError)
   end
 
   context 'when stocked with books only' do
     let(:catalog) do
-      Catalog.new([available_book, unavailable_book, one_left_book])
+      Shop::Catalog.new([available_book, unavailable_book, one_left_book])
     end
 
     subject(:inventory) do
-      Inventory.new(catalog, quantities)
+      Shop::Inventory.new(catalog, quantities)
     end
 
     describe '#quantity' do

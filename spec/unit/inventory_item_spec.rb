@@ -1,14 +1,14 @@
-require 'lib/inventory_item'
-require 'lib/product'
+require_relative '../../lib/inventory_item'
+require_relative '../../lib/product'
 
-RSpec.describe InventoryItem do
+RSpec.describe Shop::InventoryItem do
   it 'requires a product' do
-    expect { InventoryItem.new(nil) }.to raise_error(ArgumentError)
+    expect { Shop::InventoryItem.new(nil) }.to raise_error(ArgumentError)
   end
 
   context 'when created for a valid product' do
     let(:product) do
-      Product.new(
+      Shop::Product.new(
         id: 1,
         name: 'Agile Web Development with Rails 5',
         price: 2800,
@@ -16,25 +16,31 @@ RSpec.describe InventoryItem do
       )
     end
 
-    subject(:item) { InventoryItem.new(product) }
+    subject(:item) { Shop::InventoryItem.new(product) }
 
     describe '#new' do
       it 'accepts an optional quantity' do
-        expect { InventoryItem.new(product, 1) }.not_to raise_error
+        expect { Shop::InventoryItem.new(product, 1) }
+          .not_to raise_error
       end
 
       it 'requires a not-nil quantity' do
-        expect { InventoryItem.new(product, nil) }.to raise_error(ArgumentError)
+        expect { Shop::InventoryItem.new(product, nil) }
+          .to raise_error(ArgumentError)
       end
 
       it 'requires an integer quantity' do
-        expect { InventoryItem.new(product, 'a') }.to raise_error(ArgumentError)
-        expect { InventoryItem.new(product, 1.2) }.to raise_error(ArgumentError)
+        expect { Shop::InventoryItem.new(product, 'a') }
+          .to raise_error(ArgumentError)
+        expect { Shop::InventoryItem.new(product, 1.2) }
+          .to raise_error(ArgumentError)
       end
 
       it 'requires a quantity > 0' do
-        expect { InventoryItem.new(product, -1) }.to raise_error(ArgumentError)
-        expect { InventoryItem.new(product, 0) }.not_to raise_error
+        expect { Shop::InventoryItem.new(product, -1) }
+          .to raise_error(ArgumentError)
+        expect { Shop::InventoryItem.new(product, 0) }
+          .not_to raise_error
       end
     end
 

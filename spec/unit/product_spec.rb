@@ -1,6 +1,6 @@
-require 'lib/product'
+require_relative '../../lib/product'
 
-RSpec.describe Product do
+RSpec.describe Shop::Product do
   let(:attributes) do
     {
       id: 1,
@@ -10,48 +10,48 @@ RSpec.describe Product do
     }
   end
 
-  subject(:product) { Product.new(attributes) }
+  subject(:product) { Shop::Product.new(attributes) }
 
   it { is_expected.to be } # the bestests test
 
   describe '#new' do
     it 'requires an id' do
       attributes[:id] = nil
-      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
     end
 
     it 'requires a name' do
       attributes[:name] = nil
-      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
     end
 
     it 'requires a name to be a string' do
       attributes[:name] = 3
-      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
     end
 
     it 'requires a name to be at least 2 characters long' do
       attributes[:name] = 3
-      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
     end
 
     it 'requires a price to be an integer' do
       attributes[:price] = 12.34
-      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
     end
 
     it 'requires a price to be positive number' do
       attributes[:price] = -12
-      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
     end
 
     it 'requires a vat category id to be exactly either 1 or 2' do
       attributes[:vat_category_id] = 1
-      expect { Product.new(attributes) }.not_to raise_error
+      expect { Shop::Product.new(attributes) }.not_to raise_error
       attributes[:vat_category_id] = 2
-      expect { Product.new(attributes) }.not_to raise_error
+      expect { Shop::Product.new(attributes) }.not_to raise_error
       attributes[:vat_category_id] = 3
-      expect { Product.new(attributes) }.to raise_error(ArgumentError)
+      expect { Shop::Product.new(attributes) }.to raise_error(ArgumentError)
     end
   end
 
@@ -95,7 +95,7 @@ RSpec.describe Product do
 
   describe '#eql?' do
     it 'returns true for an identical product' do
-      identical_product = Product.new(
+      identical_product = Shop::Product.new(
         id: 1,
         name: 'Agile Web Development with Rails 5',
         price: 2800,

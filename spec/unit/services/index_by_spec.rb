@@ -1,6 +1,8 @@
-RSpec.describe IndexBy do
+require_relative '../../../lib/services/index_by'
+
+RSpec.describe Shop::IndexBy do
   let(:book) do
-    Product.new(
+    Shop::Product.new(
       id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
@@ -9,7 +11,7 @@ RSpec.describe IndexBy do
   end
 
   let(:another_book) do
-    Product.new(
+    Shop::Product.new(
       id: 3,
       name: 'Web Development with Clojure, Second Edition',
       price: 2400,
@@ -18,7 +20,7 @@ RSpec.describe IndexBy do
   end
 
   let(:tshirt) do
-    Product.new(
+    Shop::Product.new(
       id: 6,
       name: 'Pragmatic T-Shirt',
       price: 900,
@@ -45,7 +47,7 @@ RSpec.describe IndexBy do
       let(:products) { [book, another_book, tshirt] }
 
       context "and a block calling item's #id" do
-        subject(:indexed_by) { IndexBy.new.call(products, &:id) }
+        subject(:indexed_by) { Shop::IndexBy.new.call(products, &:id) }
 
         it_behaves_like 'hash that', 3
 
@@ -55,7 +57,7 @@ RSpec.describe IndexBy do
       end
 
       context "and a block calling products's #name" do
-        subject(:indexed_by) { IndexBy.new.call(products, &:name) }
+        subject(:indexed_by) { Shop::IndexBy.new.call(products, &:name) }
 
         it_behaves_like 'hash that', 3
 
@@ -67,26 +69,26 @@ RSpec.describe IndexBy do
 
     context 'with an array of one book, and a doubled tshirt' do
       let(:products) { [book, tshirt, tshirt] }
-      subject(:indexed_by) { IndexBy.new.call(products, &:id) }
+      subject(:indexed_by) { Shop::IndexBy.new.call(products, &:id) }
 
       it_behaves_like 'hash that', 2
     end
 
     context 'with an empty array' do
-      subject(:indexed_by) { IndexBy.new.call([], &:id) }
+      subject(:indexed_by) { Shop::IndexBy.new.call([], &:id) }
 
       it { is_expected.to eq({}) }
     end
 
     context 'with nil' do
-      subject(:indexed_by) { IndexBy.new.call(nil, &:id) }
+      subject(:indexed_by) { Shop::IndexBy.new.call(nil, &:id) }
 
       it { is_expected.to eq({}) }
     end
 
     context 'without a block' do
       it 'raises error' do
-        expect { IndexBy.new.call([book, another_book]) }
+        expect { Shop::IndexBy.new.call([book, another_book]) }
           .to raise_error ArgumentError
       end
     end
