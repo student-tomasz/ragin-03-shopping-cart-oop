@@ -112,29 +112,48 @@ RSpec.describe Shop::Product do
     it { is_expected.to eq(0.08) }
   end
 
+  describe '#==' do
+    context 'with other product of the same params' do
+      let(:other_product) { Shop::Product.new(params) }
+
+      it 'returns true' do
+        expect(product).to be == other_product
+      end
+    end
+  end
+
   describe '#eql?' do
-    it 'returns true for an identical product' do
-      identical_product = Shop::Product.new(
-        id: 1,
-        name: 'Agile Web Development with Rails 5',
-        price: 2800,
-        vat_id: 2
-      )
-      expect(product).to eq(identical_product)
-      expect(product).to eql(identical_product)
-      expect(product).not_to equal(identical_product)
+    context 'with other product of the same params' do
+      let(:other_product) { Shop::Product.new(params) }
+
+      it 'returns true' do
+        expect(product).to eql(other_product)
+      end
+    end
+  end
+
+  describe '#equal?' do
+    context 'with other product of the same params' do
+      let(:other_product) { Shop::Product.new(params) }
+
+      it 'returns false' do
+        expect(product).not_to equal(other_product)
+      end
     end
   end
 
   describe '#to_h' do
-    it 'returns a filled hash' do
-      expected_hash = {
+    let(:expected_hash) do
+      {
         id: 1,
         name: 'Agile Web Development with Rails 5',
         price: 2800,
         price_with_vat: 3024,
         vat: 0.08
       }
+    end
+
+    it 'returns a filled hash' do
       expect(product.to_h).to eq(expected_hash)
     end
   end
