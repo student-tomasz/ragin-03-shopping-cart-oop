@@ -1,0 +1,16 @@
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% products.each do |product| %>
+    <tr>
+      <td><%= product.name %></td>
+      <td><%= product.price_with_vat %> (VAT <%= (product.vat * 100).to_i %>%)</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

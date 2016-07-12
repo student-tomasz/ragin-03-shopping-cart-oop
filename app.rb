@@ -6,6 +6,7 @@ $LOAD_PATH << File.expand_path('../', __FILE__)
 
 require 'app/models'
 require 'app/services'
+require 'app/routes'
 
 module Shop
   PRODUCTS = [
@@ -65,5 +66,10 @@ module Shop
   ].map { |attrs| Models::CartItem.new(attrs) }
 
   class App < Sinatra::Application
+    configure do
+      set :root, File.dirname(__FILE__)
+    end
+
+    use Routes::Products
   end
 end
