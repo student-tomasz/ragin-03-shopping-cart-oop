@@ -9,7 +9,7 @@
   <% products.each do |product| %>
     <tr>
       <td><%= product.name %></td>
-      <td><%= product.price_with_vat %> (VAT <%= (product.vat * 100).to_i %>%)</td>
+      <td><%= product.price_with_vat %> (VAT <%= product.vat %>)</td>
     </tr>
   <% end %>
   </tbody>

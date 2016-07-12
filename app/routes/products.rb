@@ -7,7 +7,8 @@ module Shop
 
       get '/products' do
         products = Services::FetchProducts.new.call
-        erb :'products/index', locals: { products: products }
+        products_presenters = products.map { |product| Presenters::Product.new(product) }
+        erb :'products/index', locals: { products: products_presenters }
       end
     end
   end

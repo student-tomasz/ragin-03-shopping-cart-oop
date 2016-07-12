@@ -7,6 +7,7 @@ require 'sinatra/base'
 
 require 'app/models'
 require 'app/services'
+require 'app/presenters'
 require 'app/routes'
 
 module Shop
