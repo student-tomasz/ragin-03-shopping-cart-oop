@@ -1,8 +1,9 @@
 require 'rubygems'
 require 'bundler/setup'
 
-Bundler.require
 $LOAD_PATH << File.expand_path('../', __FILE__)
+
+require 'sinatra/base'
 
 require 'app/models'
 require 'app/services'
