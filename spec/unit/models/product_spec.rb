@@ -1,6 +1,4 @@
-require_relative '../../lib/product'
-
-RSpec.describe Shop::Product do
+RSpec.describe Shop::Models::Product do
   let(:params) do
     {
       name: 'Agile Web Development with Rails 5',
@@ -9,12 +7,13 @@ RSpec.describe Shop::Product do
     }
   end
 
-  subject(:product) { Shop::Product.new(params) }
+  subject(:product) { Shop::Models::Product.new(params) }
 
   describe '#new' do
     shared_examples 'raises error' do |error_type|
       it "raises #{error_type.name.split('::').last}" do
-        expect { Shop::Product.new(invalid_params) }.to raise_error(error_type)
+        expect { Shop::Models::Product.new(invalid_params) }
+          .to raise_error(error_type)
       end
     end
 
@@ -22,19 +21,19 @@ RSpec.describe Shop::Product do
       context 'nil' do
         let(:invalid_params) { params.merge!(name: nil) }
 
-        include_examples 'raises error', Shop::Product::InvalidNameError
+        include_examples 'raises error', Shop::Models::Product::InvalidNameError
       end
 
       context 'not a string' do
         let(:invalid_params) { params.merge!(name: 1234) }
 
-        include_examples 'raises error', Shop::Product::InvalidNameError
+        include_examples 'raises error', Shop::Models::Product::InvalidNameError
       end
 
       context 'shorter than 2 characters' do
         let(:invalid_params) { params.merge!(name: 'a') }
 
-        include_examples 'raises error', Shop::Product::InvalidNameError
+        include_examples 'raises error', Shop::Models::Product::InvalidNameError
       end
     end
 
@@ -42,13 +41,13 @@ RSpec.describe Shop::Product do
       context 'not an integer' do
         let(:invalid_params) { params.merge!(price: 12.34) }
 
-        include_examples 'raises error', Shop::Product::InvalidPriceError
+        include_examples 'raises error', Shop::Models::Product::InvalidPriceError
       end
 
       context 'not a positive number' do
         let(:invalid_params) { params.merge!(price: -1200) }
 
-        include_examples 'raises error', Shop::Product::InvalidPriceError
+        include_examples 'raises error', Shop::Models::Product::InvalidPriceError
       end
     end
 
@@ -56,13 +55,13 @@ RSpec.describe Shop::Product do
       context 'nil' do
         let(:invalid_params) { params.merge!(vat_id: nil) }
 
-        include_examples 'raises error', Shop::VAT::UnknownCategoryError
+        include_examples 'raises error', Shop::Models::VAT::UnknownCategoryError
       end
 
       context 'unknown category' do
         let(:invalid_params) { params.merge!(vat_id: -1) }
 
-        include_examples 'raises error', Shop::VAT::UnknownCategoryError
+        include_examples 'raises error', Shop::Models::VAT::UnknownCategoryError
       end
     end
   end
@@ -106,7 +105,7 @@ RSpec.describe Shop::Product do
   end
 
   describe 'equality using' do
-    let(:other_product) { Shop::Product.new(params.merge!(id: product.id)) }
+    let(:other_product) { Shop::Models::Product.new(params.merge!(id: product.id)) }
 
     describe '#==' do
       context 'with other product of the same id' do
