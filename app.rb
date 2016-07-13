@@ -3,6 +3,7 @@ require 'bundler/setup'
 
 $LOAD_PATH.unshift File.expand_path('../', __FILE__)
 
+require 'json'
 require 'sinatra/base'
 
 require 'app/models'
@@ -11,61 +12,10 @@ require 'app/presenters'
 require 'app/routes'
 
 module Shop
-  PRODUCTS = [
-    {
-      id: 1,
-      name: 'Agile Web Development with Rails 5',
-      price: 2800,
-      vat_id: 2
-    }, {
-      id: 2,
-      name: 'Data Science Essentials in Python',
-      price: 1900,
-      vat_id: 2
-    }, {
-      id: 3,
-      name: 'Web Development with Clojure, Second Edition',
-      price: 2400,
-      vat_id: 2
-    }, {
-      id: 4,
-      name: 'Serverless Single Page Apps',
-      price: 3000,
-      vat_id: 2
-    }, {
-      id: 5,
-      name: 'Deploying with JRuby 9k',
-      price: 1600,
-      vat_id: 2
-    }, {
-      id: 6,
-      name: 'Pragmatic T-Shirt',
-      price: 900,
-      vat_id: 1
-    }
-  ].map { |attrs| Models::Product.new(attrs) }
-
-  CART = [
-    {
-      product_id: 1,
-      quantity: 17
-    }, {
-      product_id: 2,
-      quantity: 0
-    }, {
-      product_id: 3,
-      quantity: 8
-    }, {
-      product_id: 4,
-      quantity: 1
-    }, {
-      product_id: 5,
-      quantity: 1
-    }, {
-      product_id: 6,
-      quantity: 2
-    }
-  ].map { |attrs| Models::CartItem.new(attrs) }
+  DB_FILE = File.join(File.expand_path('../', __FILE__), 'db', 'seed.json')
+  DB = JSON.parse(File.read(DB_FILE), symbolize_names: true)
+  PRODUCTS = DB[:products].map { |attrs| Models::Product.new(attrs) }
+  CART = DB[:cart].map { |attrs| Models::CartItem.new(attrs) }
 
   class App < Sinatra::Application
     use Routes::Cart

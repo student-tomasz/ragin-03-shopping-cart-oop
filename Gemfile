@@ -2,9 +2,11 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
+gem 'json', '~> 2.0.1'
 gem 'sinatra', '~> 1.4.0', require: 'sinatra/base'
 
 group :development do
+  gem 'byebug', '~> 9.0.5'
   gem 'rake', '~> 11.2.2', require: false
   gem 'rb-fsevent', '~> 0.9.7', require: false
   gem 'rerun', '~> 0.11.0', require: false
