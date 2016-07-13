@@ -21,7 +21,7 @@
       <% cart.items.each_with_index do |cart_item, no| %>
         <tr>
           <th scope="row" class="text-xs-right">
-            <span class="id"><%= no %>.</span>
+            <span class="id"><%= no + 1 %>.</span>
           </th>
           <td>
             <span class="name"><%= cart_item.product.name %></span>
