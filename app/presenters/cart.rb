@@ -15,7 +15,9 @@ module Shop
       attr_reader :cart
 
       def items
-        @items ||= cart.items
+        @cart_items_presenters ||= cart.items.map do |cart_item|
+          Presenters::CartItem.new(cart_item)
+        end
       end
 
       def total

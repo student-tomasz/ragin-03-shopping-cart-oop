@@ -22,9 +22,9 @@ RSpec.describe Shop::Presenters::Cart do
     end
 
     describe '#items' do
-      it 'is an array of Models::CartItem' do
+      it 'is an array of Presenters::CartItem' do
         cart_presenter.items.each do |cart_item_presenter|
-          expect(cart_item_presenter).to be_a(Shop::Models::CartItem)
+          expect(cart_item_presenter).to be_a(Shop::Presenters::CartItem)
         end
       end
     end
