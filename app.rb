@@ -72,6 +72,7 @@ module Shop
       set :root, File.dirname(__FILE__)
     end
 
+    use Routes::Cart
     use Routes::Products
   end
 end

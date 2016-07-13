@@ -2,7 +2,7 @@ module Shop
   module Services
     class FetchCart
       def call
-        CART
+        Models::Cart.new(CART)
       end
     end
   end
