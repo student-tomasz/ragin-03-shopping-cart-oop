@@ -8,7 +8,7 @@ group :development do
   gem 'rake', '~> 11.2.2', require: false
   gem 'rb-fsevent', '~> 0.9.7', require: false
   gem 'rerun', '~> 0.11.0', require: false
-  gem 'thin', '~> 1.7.0', require: false
+  gem 'puma', '~> 3.4.0', require: false
 end
 
 group :test do

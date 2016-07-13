@@ -5,7 +5,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
 end
 
 task :server do
-  server = 'thin'
+  server = 'puma'
   port = ENV['PORT'] || 4000
   env = ENV['RACK_ENV'] || 'development'
   exec("bundle exec rerun -- rackup --server #{server} --port #{port} --env #{env}")
