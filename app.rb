@@ -68,10 +68,6 @@ module Shop
   ].map { |attrs| Models::CartItem.new(attrs) }
 
   class App < Sinatra::Application
-    configure do
-      set :root, File.dirname(__FILE__)
-    end
-
     use Routes::Cart
     use Routes::Products
   end
