@@ -7,7 +7,8 @@ module Shop
 
       get '/cart' do
         cart = Services::FetchCart.new.call
-        erb :'cart/index', locals: { cart: cart }
+        cart_presenter = Presenters::Cart.new(cart)
+        erb :'cart/index', locals: { cart: cart_presenter }
       end
     end
   end
