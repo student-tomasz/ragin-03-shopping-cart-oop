@@ -1,6 +1,10 @@
+require 'app/presenters/helpers/format_price'
+
 module Shop
   module Presenters
     class Cart
+      include Helpers::FormatPrice
+
       class InvalidCartError < ArgumentError; end
 
       def initialize(cart)
@@ -15,11 +19,11 @@ module Shop
       end
 
       def total
-        format('$%.2f', cart.total.to_f / 100.0)
+        format_price(cart.total)
       end
 
       def total_with_vat
-        format('$%.2f', cart.total_with_vat.to_f / 100.0)
+        format_price(cart.total_with_vat)
       end
     end
   end
