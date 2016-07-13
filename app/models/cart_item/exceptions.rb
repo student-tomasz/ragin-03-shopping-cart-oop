@@ -2,9 +2,8 @@ module Shop
   module Models
     class CartItem
       module Exceptions
-        class CartItemError < ArgumentError; end
-        class InvalidProductIdError < CartItemError; end
-        class InvalidQuantityError < CartItemError; end
+        InvalidProductIdError = Class.new(ArgumentError)
+        InvalidQuantityError = Class.new(ArgumentError)
       end
     end
   end

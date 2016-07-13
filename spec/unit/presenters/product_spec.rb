@@ -3,7 +3,7 @@ RSpec.describe Shop::Presenters::Product do
     describe '#new' do
       it 'raises error' do
         expect { Shop::Presenters::Product.new(nil) }
-          .to raise_error(ArgumentError)
+          .to raise_error(Shop::Presenters::Product::InvalidProductError)
       end
     end
   end

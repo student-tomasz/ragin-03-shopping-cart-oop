@@ -7,8 +7,10 @@ module Shop
       extend Forwardable
       include Helpers::FormatPrice
 
+      InvalidProductError = Class.new(ArgumentError)
+
       def initialize(product)
-        raise ArgumentError unless product.is_a?(Models::Product)
+        raise InvalidProductError unless product.is_a?(Models::Product)
         @product = product
       end
 

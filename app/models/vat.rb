@@ -1,20 +1,18 @@
 module Shop
   module Models
     class VAT
-      class UnknownCategoryError < StandardError; end
+      UnknownCategoryError = Class.new(ArgumentError)
 
       class << self
+        def for_category(id)
+          raise UnknownCategoryError unless @instances.key?(id)
+          @instances[id]
+        end
+
         private
 
         def new(*args)
           super(*args)
-        end
-
-        public
-
-        def for_category(id)
-          raise UnknownCategoryError unless @instances.key?(id)
-          @instances[id]
         end
       end
 

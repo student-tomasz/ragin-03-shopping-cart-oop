@@ -2,11 +2,10 @@ module Shop
   module Models
     class Product
       module Exceptions
-        class ProductError < ArgumentError; end
-        class InvalidIdError < ProductError; end
-        class InvalidNameError < ProductError; end
-        class InvalidPriceError < ProductError; end
-        class InvalidVatError < ProductError; end
+        InvalidIdError = Class.new(ArgumentError)
+        InvalidNameError = Class.new(ArgumentError)
+        InvalidPriceError = Class.new(ArgumentError)
+        InvalidVatError = Class.new(ArgumentError)
       end
     end
   end

@@ -5,7 +5,7 @@ module Shop
     class CartItem
       include Helpers::FormatPrice
 
-      class InvalidCartItemError < ArgumentError; end
+      InvalidCartItemError = Class.new(ArgumentError)
 
       def initialize(cart_item)
         raise InvalidCartItemError unless cart_item.is_a?(Models::CartItem)
