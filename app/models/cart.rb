@@ -1,8 +1,8 @@
 module Shop
   module Models
     class Cart
-      def initialize
-        @items = Services::FetchCart.new.call
+      def initialize(items)
+        @items = items
       end
 
       attr_reader :items

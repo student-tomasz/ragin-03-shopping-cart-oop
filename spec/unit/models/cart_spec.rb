@@ -11,8 +11,7 @@ RSpec.describe Shop::Models::Cart do
 
   context 'when empty' do
     subject(:cart) do
-      stub_const('Shop::CART', [])
-      Shop::Models::Cart.new
+      Shop::Models::Cart.new([])
     end
 
     describe '#items' do
@@ -46,11 +45,11 @@ RSpec.describe Shop::Models::Cart do
 
   context 'with a book and a doubled t-shirt' do
     subject(:cart) do
-      stub_const('Shop::CART', [
+      cart_items = [
         Shop::Models::CartItem.new(product_id: 3, quantity: 1),
         Shop::Models::CartItem.new(product_id: 6, quantity: 2)
-      ])
-      Shop::Models::Cart.new
+      ]
+      Shop::Models::Cart.new(cart_items)
     end
 
     describe '#items' do

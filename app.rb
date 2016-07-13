@@ -62,7 +62,7 @@ module Shop
       product_id: 5,
       quantity: 1
     }, {
-      product_id: 1,
+      product_id: 6,
       quantity: 2
     }
   ].map { |attrs| Models::CartItem.new(attrs) }
