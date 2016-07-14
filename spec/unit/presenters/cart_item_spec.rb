@@ -13,15 +13,15 @@ RSpec.describe Shop::Presenters::CartItem do
   context 'with cart item of two tshirts' do
     let(:tshirt) do
       Shop::Models::Product.new(
-        id: 6,
         name: 'Pragmatic T-Shirt',
         price: 900,
         vat_id: 1
       )
     end
 
-    before do
-      allow(Shop).to receive(:PRODUCTS).and_return([tshirt])
+    before :each do
+      # allow(Shop).to receive(:PRODUCTS).and_return([tshirt])
+      stub_const('Shop::PRODUCTS', [tshirt])
     end
 
     let(:cart_item) do

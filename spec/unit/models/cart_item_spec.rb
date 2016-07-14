@@ -1,19 +1,19 @@
 RSpec.describe Shop::Models::CartItem do
   let(:product) do
     Shop::Models::Product.new(
-      id: 1,
       name: 'Agile Web Development with Rails 5',
       price: 2800,
       vat_id: 2
     )
   end
 
-  before do
-    allow(Shop).to receive(:PRODUCTS).and_return([product])
+  before :each do
+    # allow(Shop).to receive(:PRODUCTS).and_return([product])
+    stub_const('Shop::PRODUCTS', [product])
   end
 
   shared_examples 'returns a multiplied' do |method, quantity|
-    it "returns #{quantity} times multiplied by the product's #{method}" do
+    it "returns the product's #{method} multiplied times #{quantity}" do
       expect(subject).to eq(product.send(method) * quantity)
     end
 
