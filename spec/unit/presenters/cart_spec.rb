@@ -11,7 +11,14 @@ RSpec.describe Shop::Presenters::Cart do
   end
 
   context 'with valid cart' do
-    let(:cart) { Shop::Models::Cart.new(Shop::CART) }
+    let(:cart_items) do
+      [
+        Shop::Models::CartItem.new(product_id: 3, quantity: 1),
+        Shop::Models::CartItem.new(product_id: 6, quantity: 2)
+      ]
+    end
+
+    let(:cart) { Shop::Models::Cart.new(cart_items) }
 
     subject(:cart_presenter) { Shop::Presenters::Cart.new(cart) }
 
@@ -31,13 +38,13 @@ RSpec.describe Shop::Presenters::Cart do
 
     describe '#total' do
       it 'returns a formatted total' do
-        expect(cart_presenter.total).to eq('$732.00')
+        expect(cart_presenter.total).to eq('$42.00')
       end
     end
 
     describe '#total_with_vat' do
       it 'returns a formatted total with vat' do
-        expect(cart_presenter.total_with_vat).to eq('$793.26')
+        expect(cart_presenter.total_with_vat).to eq('$48.06')
       end
     end
   end

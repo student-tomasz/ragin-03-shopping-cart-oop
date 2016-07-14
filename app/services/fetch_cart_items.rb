@@ -1,8 +1,8 @@
 module Shop
   module Services
-    class FetchCart
+    class FetchCartItems
       def call
-        Models::Cart.new(CART)
+        CART_ITEMS
       end
     end
   end
