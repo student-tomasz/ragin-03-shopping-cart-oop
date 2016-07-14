@@ -1,9 +1,23 @@
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.table-id-column,
+.table-number-column {
+  text-align: right;
+}
+
 .table-id-column {
   width: 5%;
-  text-align: right;
 }
 
 .table-number-column {
   width: 10%;
-  text-align: right;
+}
+
+.table-products .id {
+  font-family: monospace;
+  font-size: 0.9em;
+  text-transform: uppercase;
 }

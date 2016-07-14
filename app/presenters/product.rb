@@ -14,6 +14,10 @@ module Shop
         @product = product
       end
 
+      def short_id
+        id[0..3]
+      end
+
       attr_reader :product
 
       def price

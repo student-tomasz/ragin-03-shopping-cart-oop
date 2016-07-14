@@ -7,6 +7,11 @@ module Shop
         cart_presenter = Presenters::Cart.new(cart)
         erb :'cart/index', locals: { cart: cart_presenter }
       end
+
+      post '/cart' do
+        Services::AddProductToCart.new.call(product_id: params['product_id'])
+        redirect '/cart'
+      end
     end
   end
 end

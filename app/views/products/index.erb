@@ -1,19 +1,22 @@
 <div class="container">
   <div class="row">
-    <table class="table table-hover">
+    <table class="table table-hover table-products">
       <thead class="thead-default">
         <tr>
           <th class="table-id-column">ID</th>
           <th>Name</th>
           <th class="table-number-column">Price</th>
           <th class="table-number-column">VAT</th>
+          <th>&nbsp;</th>
         </tr>
       </thead>
       <tbody>
       <% products.each do |product| %>
         <tr>
           <th scope="row" class="table-id-column">
-            <span class="id"><%= product.id %></span>
+            <span class="id">
+              <abbrv title="<%= product.id %>"><%= product.short_id %></abbrv>
+            </span>
           </th>
           <td>
             <span class="name"><%= product.name %></span>
@@ -23,6 +26,12 @@
           </td>
           <td class="table-number-column">
             <span class="vat">(VAT <%= product.vat %>)</span>
+          </td>
+          <td class="table-number-column">
+            <form action="/cart" method="post">
+              <input name="product_id" value="<%= product.id %>" type="hidden">
+              <input name="submit" value="Add to cart" type="submit" class="btn btn-sm btn-primary">
+            </form>
           </td>
         </tr>
       <% end %>
