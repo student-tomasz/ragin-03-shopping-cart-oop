@@ -11,9 +11,18 @@ RSpec.describe Shop::Presenters::CartItem do
   end
 
   context 'with cart item of two tshirts' do
-    let(:tshirt_id) { 6 }
+    let(:tshirt) do
+      Shop::Models::Product.new(
+        id: 6,
+        name: 'Pragmatic T-Shirt',
+        price: 900,
+        vat_id: 1
+      )
+    end
 
-    let(:tshirt) { Shop::Services::FetchProduct.new.call(tshirt_id) }
+    before do
+      allow(Shop).to receive(:PRODUCTS).and_return([tshirt])
+    end
 
     let(:cart_item) do
       Shop::Models::CartItem.new(product_id: tshirt.id, quantity: 2)

@@ -1,5 +1,16 @@
 RSpec.describe Shop::Models::CartItem do
-  let(:product) { Shop::Services::FetchProduct.new.call(1) }
+  let(:product) do
+    Shop::Models::Product.new(
+      id: 1,
+      name: 'Agile Web Development with Rails 5',
+      price: 2800,
+      vat_id: 2
+    )
+  end
+
+  before do
+    allow(Shop).to receive(:PRODUCTS).and_return([product])
+  end
 
   shared_examples 'returns a multiplied' do |method, quantity|
     it "returns #{quantity} times multiplied by the product's #{method}" do
