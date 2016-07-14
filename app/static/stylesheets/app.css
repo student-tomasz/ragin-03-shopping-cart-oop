@@ -1,0 +1,9 @@
+.table-id-column {
+  width: 5%;
+  text-align: right;
+}
+
+.table-number-column {
+  width: 10%;
+  text-align: right;
+}

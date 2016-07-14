@@ -18,6 +18,11 @@ module Shop
   CART = DB[:cart].map { |attrs| Models::CartItem.new(attrs) }
 
   class App < Sinatra::Application
+    configure do
+      set :root, File.expand_path('../app', __FILE__)
+      set :public_folder, -> { File.join(root, 'static') }
+    end
+
     use Routes::Cart
     use Routes::Products
   end
