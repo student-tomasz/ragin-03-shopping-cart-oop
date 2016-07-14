@@ -1,4 +1,26 @@
 RSpec.describe Shop::Models::Cart do
+  describe '#new' do
+    context 'with nil' do
+      it 'raises an error' do
+        expect { Shop::Models::Cart.new(nil) }
+          .to raise_error(ArgumentError)
+      end
+    end
+
+    context 'with an array containing anything other than Models::CartItem' do
+      it 'raises an error' do
+        expect { Shop::Models::Cart.new([Object.new]) }
+          .to raise_error(ArgumentError)
+      end
+    end
+
+    context 'with an empty array' do
+      it 'doesn\'t raise an error' do
+        expect { Shop::Models::Cart.new([]) }
+          .not_to raise_error
+      end
+    end
+  end
   shared_examples 'returns a sum of' do |method, value|
     it "sums items' #{method}" do
       expect(subject.send(method)).to eq(value)
