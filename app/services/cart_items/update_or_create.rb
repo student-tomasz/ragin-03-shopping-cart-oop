@@ -1,7 +1,7 @@
 module Shop
   module Services
     module CartItems
-      class SetQuantity
+      class UpdateOrCreate
         def call(product_id:, quantity:)
           new_cart_item = create! product_id, quantity
           delete product_id

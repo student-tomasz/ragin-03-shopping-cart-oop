@@ -1,14 +1,14 @@
 module Shop
   module Services
     module CartItems
-      RSpec.describe SetQuantity do
+      RSpec.describe UpdateOrCreate do
         include_context 'shared global state stubs'
 
         describe '#call' do
           shared_examples 'raises Products::ProductDoesNotExistError' do |product_id|
             it 'raises Products::ProductDoesNotExistError' do
               attrs = { product_id: product_id, quantity: 1 }
-              expect { SetQuantity.new.call(attrs) }
+              expect { UpdateOrCreate.new.call(attrs) }
                 .to raise_error(Products::ProductDoesNotExistError)
             end
           end
@@ -16,7 +16,7 @@ module Shop
           shared_examples 'raises CartItems::InvalidQuantityError' do |quantity|
             it 'raises CartItems::InvalidQuantityError' do
               attrs = { product_id: in_cart_product.id, quantity: quantity }
-              expect { SetQuantity.new.call(attrs) }
+              expect { UpdateOrCreate.new.call(attrs) }
                 .to raise_error(CartItems::InvalidQuantityError)
             end
           end
@@ -45,7 +45,7 @@ module Shop
             it 'creates a new CartItem' do
               expect { Fetch.new.call(product_id: not_in_cart_product.id) }
                 .to raise_error(CartItems::CartItemDoesNotExistError)
-              SetQuantity.new.call(product_id: not_in_cart_product.id, quantity: 17)
+              UpdateOrCreate.new.call(product_id: not_in_cart_product.id, quantity: 17)
               expect { Fetch.new.call(product_id: not_in_cart_product.id) }
                 .not_to raise_error
             end
@@ -54,7 +54,7 @@ module Shop
           context "with an existing Product's id that's already in the cart" do
             context 'with quantity > 0' do
               it 'updates the CartItem#quantity' do
-                expect { SetQuantity.new.call(product_id: in_cart_product.id, quantity: 17) }
+                expect { UpdateOrCreate.new.call(product_id: in_cart_product.id, quantity: 17) }
                   .to change { Fetch.new.call(product_id: in_cart_product.id).quantity }
                   .from(1).to(17)
               end
@@ -64,7 +64,7 @@ module Shop
               it 'deletes the CartItem' do
                 expect { Fetch.new.call(product_id: in_cart_product.id) }
                   .not_to raise_error
-                SetQuantity.new.call(product_id: in_cart_product.id, quantity: 0)
+                UpdateOrCreate.new.call(product_id: in_cart_product.id, quantity: 0)
                 expect { Fetch.new.call(product_id: in_cart_product.id) }
                   .to raise_error(CartItems::CartItemDoesNotExistError)
               end

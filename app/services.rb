@@ -12,7 +12,7 @@ module Shop
       autoload :FetchAll, 'app/services/cart_items/fetch_all'
       autoload :Fetch, 'app/services/cart_items/fetch'
       autoload :IncrementOrCreate, 'app/services/cart_items/increment_or_create'
-      autoload :SetQuantity, 'app/services/cart_items/set_quantity'
+      autoload :UpdateOrCreate, 'app/services/cart_items/update_or_create'
     end
   end
 end

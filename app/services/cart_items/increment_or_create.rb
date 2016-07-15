@@ -22,7 +22,7 @@ module Shop
         end
 
         def update_cart_item(product_id, quantity)
-          SetQuantity.new.call(
+          UpdateOrCreate.new.call(
             product_id: product_id,
             quantity: quantity
           )

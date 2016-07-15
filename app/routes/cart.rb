@@ -16,7 +16,7 @@ module Shop
       end
 
       put '/cart' do
-        Services::CartItems::SetQuantity.new.call(
+        Services::CartItems::UpdateOrCreate.new.call(
           product_id: params['product_id'],
           quantity: Integer(params['quantity'])
         )
