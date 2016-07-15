@@ -5,7 +5,7 @@ module Shop
   module Models
     class CartItem
       def initialize(product_id:, quantity: 0)
-        @product = Services::FetchProduct.new.call(product_id: product_id)
+        @product = Services::Products::Fetch.new.call(product_id: product_id)
         @quantity = quantity
         Validator.new(self).validate!
       end

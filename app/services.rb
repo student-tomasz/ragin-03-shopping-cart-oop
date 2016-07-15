@@ -1,11 +1,16 @@
 module Shop
   module Services
-    autoload :SetProductQuantityInCart, 'app/services/set_product_quantity_in_cart'
-    autoload :RemoveProductFromCart, 'app/services/remove_product_from_cart'
-    autoload :FetchCartItems, 'app/services/fetch_cart_items'
-    autoload :FetchCartItem, 'app/services/fetch_cart_item'
-    autoload :IncrementCartItem, 'app/services/increment_cart_item'
-    autoload :FetchProducts, 'app/services/fetch_products'
-    autoload :FetchProduct, 'app/services/fetch_product'
+    module Products
+      autoload :FetchAll, 'app/services/products/fetch_all'
+      autoload :Fetch, 'app/services/products/fetch'
+    end
+
+    module CartItems
+      autoload :Delete, 'app/services/cart_items/delete'
+      autoload :FetchAll, 'app/services/cart_items/fetch_all'
+      autoload :Fetch, 'app/services/cart_items/fetch'
+      autoload :Increment, 'app/services/cart_items/increment'
+      autoload :SetQuantity, 'app/services/cart_items/set_quantity'
+    end
   end
 end

@@ -2,19 +2,20 @@ module Shop
   module Routes
     class Cart < Base
       get '/cart' do
-        cart_items = Services::FetchCartItems.new.call
+        cart_items = Services::CartItems::FetchAll.new.call
         cart = Models::Cart.new(cart_items)
         cart_presenter = Presenters::Cart.new(cart)
+
         erb :'cart/index', locals: { cart: cart_presenter }
       end
 
       post '/cart' do
-        Services::IncrementCartItem.new.call(product_id: params['product_id'])
+        Services::CartItems::Increment.new.call(product_id: params['product_id'])
         redirect '/cart'
       end
 
       put '/cart' do
-        Services::SetProductQuantityInCart.new.call(
+        Services::CartItems::SetQuantity.new.call(
           product_id: params['product_id'],
           quantity: Integer(params['quantity'])
         )
@@ -22,7 +23,7 @@ module Shop
       end
 
       delete '/cart' do
-        Services::RemoveProductFromCart.new.call(
+        Services::CartItems::Delete.new.call(
           product_id: params['product_id']
         )
         redirect '/cart'
