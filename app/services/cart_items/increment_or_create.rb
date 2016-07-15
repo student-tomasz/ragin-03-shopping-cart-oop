@@ -1,7 +1,7 @@
 module Shop
   module Services
     module CartItems
-      class Increment
+      class IncrementOrCreate
         InvalidProductIdError = Class.new(ArgumentError)
 
         def call(product_id:)

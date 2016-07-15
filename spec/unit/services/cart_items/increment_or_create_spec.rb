@@ -1,7 +1,7 @@
 module Shop
   module Services
     module CartItems
-      RSpec.describe Increment do
+      RSpec.describe IncrementOrCreate do
         describe '#call' do
           let(:book) do
             Models::Product.new(
@@ -25,8 +25,8 @@ module Shop
 
           shared_examples 'raises InvalidProductIdError' do |product_id|
             it 'raises InvalidProductIdError' do
-              expect { Increment.new.call(product_id: product_id) }
-                .to raise_error(Increment::InvalidProductIdError)
+              expect { IncrementOrCreate.new.call(product_id: product_id) }
+                .to raise_error(IncrementOrCreate::InvalidProductIdError)
             end
           end
 
@@ -40,7 +40,7 @@ module Shop
 
           context 'with valid id' do
             it 'increments the Models::CartItem#quantity' do
-              expect { Increment.new.call(product_id: book.id) }
+              expect { IncrementOrCreate.new.call(product_id: book.id) }
                 .to change { Fetch.new.call(product_id: book.id).quantity }
                 .from(1).to(2)
             end

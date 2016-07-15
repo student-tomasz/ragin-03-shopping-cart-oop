@@ -9,7 +9,7 @@ module Shop
       autoload :Delete, 'app/services/cart_items/delete'
       autoload :FetchAll, 'app/services/cart_items/fetch_all'
       autoload :Fetch, 'app/services/cart_items/fetch'
-      autoload :Increment, 'app/services/cart_items/increment'
+      autoload :IncrementOrCreate, 'app/services/cart_items/increment_or_create'
       autoload :SetQuantity, 'app/services/cart_items/set_quantity'
     end
   end

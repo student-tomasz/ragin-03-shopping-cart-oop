@@ -5,12 +5,13 @@ module Shop
         cart_items = Services::CartItems::FetchAll.new.call
         cart = Models::Cart.new(cart_items)
         cart_presenter = Presenters::Cart.new(cart)
-
         erb :'cart/index', locals: { cart: cart_presenter }
       end
 
       post '/cart' do
-        Services::CartItems::Increment.new.call(product_id: params['product_id'])
+        Services::CartItems::IncrementOrCreate.new.call(
+          product_id: params['product_id']
+        )
         redirect '/cart'
       end
 
