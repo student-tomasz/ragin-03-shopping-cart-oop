@@ -15,6 +15,7 @@ end
 group :test do
   gem 'rack-test', '~> 0.6.3'
   gem 'rspec', '~> 3.5.0'
+  gem 'reek', '~> 4.1.1', require: false
   gem 'rubocop', '~> 0.41.2', require: false
   gem 'rubocop-rspec', '~> 1.5.0', require: false
   gem 'simplecov', '~> 0.12.0', require: false
