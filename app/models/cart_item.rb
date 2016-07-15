@@ -5,7 +5,11 @@ module Shop
   module Models
     class CartItem
       def initialize(product_id:, quantity: 0)
-        @product = Services::Products::Fetch.new.call(product_id: product_id)
+        @product = begin
+          Services::Products::Fetch.new.call(product_id: product_id)
+        rescue
+          raise InvalidProductIdError
+        end
         @quantity = quantity
         Validator.new(self).validate!
       end

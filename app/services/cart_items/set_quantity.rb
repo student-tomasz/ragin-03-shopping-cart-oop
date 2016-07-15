@@ -2,9 +2,6 @@ module Shop
   module Services
     module CartItems
       class SetQuantity
-        ProductDoesNotExistError = Class.new(ArgumentError)
-        InvalidQuantityError = Class.new(ArgumentError)
-
         def call(product_id:, quantity:)
           new_cart_item = create! product_id, quantity
           delete product_id
@@ -19,13 +16,17 @@ module Shop
             quantity: quantity
           )
         rescue Models::CartItem::InvalidProductIdError
-          raise ProductDoesNotExistError
+          raise Products::ProductDoesNotExistError
         rescue Models::CartItem::InvalidQuantityError
-          raise InvalidQuantityError
+          raise CartItems::InvalidQuantityError
         end
 
         def delete(product_id)
           Delete.new.call(product_id: product_id)
+        rescue CartItems::CartItemDoesNotExistError # rubocop:disable Lint/HandleExceptions
+          # NOP and that's OK.
+          # We want to create a CartItem if one doesn't already exist for
+          # the product_id, so there's no point in propagating the exception.
         end
 
         def persist(cart_item)

@@ -3,7 +3,7 @@ module Shop
     module Products
       class FetchAll
         def call
-          PRODUCTS
+          PRODUCTS || []
         end
       end
     end

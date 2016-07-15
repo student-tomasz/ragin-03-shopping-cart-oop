@@ -1,3 +1,5 @@
+require_relative 'services/exceptions'
+
 module Shop
   module Services
     module Products

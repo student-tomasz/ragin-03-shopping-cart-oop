@@ -2,8 +2,6 @@ module Shop
   module Services
     module CartItems
       class IncrementOrCreate
-        ProductDoesNotExistError = Class.new(ArgumentError)
-
         def call(product_id:)
           cart_item = find(product_id)
           if cart_item
@@ -18,6 +16,8 @@ module Shop
 
         def find(product_id)
           Fetch.new.call(product_id: product_id)
+        rescue CartItems::CartItemDoesNotExistError
+          nil
         end
 
         def set_quantity(product_id, quantity)
@@ -29,8 +29,8 @@ module Shop
 
         def create!(product_id)
           Models::CartItem.new(product_id: product_id, quantity: 1)
-        rescue
-          raise ProductDoesNotExistError
+        rescue Models::CartItem::InvalidProductIdError
+          raise Products::ProductDoesNotExistError
         end
 
         def persist(cart_item)
