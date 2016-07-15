@@ -12,6 +12,14 @@ module Shop
         Services::AddProductToCart.new.call(product_id: params['product_id'])
         redirect '/cart'
       end
+
+      put '/cart' do
+        Services::PlaceProductInCart.new.call(
+          product_id: params['product_id'],
+          quantity: Integer(params['quantity'])
+        )
+        redirect '/cart'
+      end
     end
   end
 end
