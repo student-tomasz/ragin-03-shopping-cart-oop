@@ -41,10 +41,6 @@ module Shop
             include_examples 'raises CartItems::InvalidQuantityError', 13.7
           end
 
-          context 'with a negative quantity' do
-            include_examples 'raises CartItems::InvalidQuantityError', -1
-          end
-
           context "with an existing Product's id that's not in the cart" do
             it 'creates a new CartItem' do
               expect { Fetch.new.call(product_id: not_in_cart_product.id) }
@@ -56,10 +52,22 @@ module Shop
           end
 
           context "with an existing Product's id that's already in the cart" do
-            it 'updates the CartItem#quantity' do
-              expect { SetQuantity.new.call(product_id: in_cart_product.id, quantity: 17) }
-                .to change { Fetch.new.call(product_id: in_cart_product.id).quantity }
+            context 'with quantity > 0' do
+              it 'updates the CartItem#quantity' do
+                expect { SetQuantity.new.call(product_id: in_cart_product.id, quantity: 17) }
+                  .to change { Fetch.new.call(product_id: in_cart_product.id).quantity }
                   .from(1).to(17)
+              end
+            end
+
+            context 'with quantity <= 0' do
+              it 'deletes the CartItem' do
+                expect { Fetch.new.call(product_id: in_cart_product.id) }
+                  .not_to raise_error
+                SetQuantity.new.call(product_id: in_cart_product.id, quantity: 0)
+                expect { Fetch.new.call(product_id: in_cart_product.id) }
+                  .to raise_error(CartItems::CartItemDoesNotExistError)
+              end
             end
           end
         end

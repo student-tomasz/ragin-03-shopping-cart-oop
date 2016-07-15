@@ -5,20 +5,20 @@ module Shop
         def call(product_id:, quantity:)
           new_cart_item = create! product_id, quantity
           delete product_id
-          persist new_cart_item
+          persist new_cart_item if new_cart_item
+          new_cart_item
         end
 
         private
 
         def create!(product_id, quantity)
-          Models::CartItem.new(
-            product_id: product_id,
-            quantity: quantity
-          )
+          Models::CartItem.new(product_id: product_id, quantity: quantity)
         rescue Models::CartItem::InvalidProductIdError
           raise Products::ProductDoesNotExistError
-        rescue Models::CartItem::InvalidQuantityError
+        rescue Models::CartItem::InvalidQuantityTypeError
           raise CartItems::InvalidQuantityError
+        rescue Models::CartItem::InvalidQuantityValueError
+          nil
         end
 
         def delete(product_id)
@@ -31,7 +31,6 @@ module Shop
 
         def persist(cart_item)
           CART_ITEMS << cart_item
-          cart_item
         end
       end
     end

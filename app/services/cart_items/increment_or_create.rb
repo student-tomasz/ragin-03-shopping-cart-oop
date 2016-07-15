@@ -3,13 +3,14 @@ module Shop
     module CartItems
       class IncrementOrCreate
         def call(product_id:)
-          cart_item = find(product_id)
+          cart_item = find product_id
           if cart_item
-            set_quantity(product_id, cart_item.quantity + 1)
+            update_cart_item product_id, cart_item.quantity + 1
           else
-            cart_item = create!(product_id)
-            persist(cart_item)
+            cart_item = create! product_id
+            persist cart_item
           end
+          cart_item
         end
 
         private
@@ -20,7 +21,7 @@ module Shop
           nil
         end
 
-        def set_quantity(product_id, quantity)
+        def update_cart_item(product_id, quantity)
           SetQuantity.new.call(
             product_id: product_id,
             quantity: quantity
@@ -35,7 +36,6 @@ module Shop
 
         def persist(cart_item)
           CART_ITEMS << cart_item
-          cart_item
         end
       end
     end
