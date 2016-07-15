@@ -8,28 +8,26 @@ RSpec.describe Shop::Services::FetchProduct do
       )
     end
 
-    context 'with invalid id' do
-      before :each do
-        stub_const('Shop::PRODUCTS', [])
-      end
+    before :each do
+      stub_const('Shop::PRODUCTS', [book])
+    end
 
+    context 'with nil id' do
       it 'returns nil' do
-        expect(Shop::Services::FetchProduct.new.call(product_id: book.id))
+        expect(Shop::Services::FetchProduct.new.call(product_id: nil))
+          .to be nil
+      end
+    end
+
+    context 'with unknown id' do
+      it 'returns nil' do
+        expect(Shop::Services::FetchProduct.new.call(product_id: -1))
           .to be nil
       end
     end
 
     context 'with valid id' do
-      before :each do
-        stub_const('Shop::PRODUCTS', [book])
-      end
-
-      it 'returns a Product' do
-        expect(Shop::Services::FetchProduct.new.call(product_id: book.id))
-          .to be_a(Shop::Models::Product)
-      end
-
-      it 'returns the product' do
+      it 'returns the Models::Product requested' do
         expect(Shop::Services::FetchProduct.new.call(product_id: book.id))
           .to eq(book)
       end

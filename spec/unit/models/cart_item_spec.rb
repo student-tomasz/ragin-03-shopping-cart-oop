@@ -8,7 +8,6 @@ RSpec.describe Shop::Models::CartItem do
   end
 
   before :each do
-    # allow(Shop).to receive(:PRODUCTS).and_return([product])
     stub_const('Shop::PRODUCTS', [product])
   end
 
@@ -141,6 +140,47 @@ RSpec.describe Shop::Models::CartItem do
           total: 5600,
           total_with_vat: 6048
         )
+      end
+    end
+  end
+
+  context 'when comparing' do
+    let(:cart_item) { Shop::Models::CartItem.new(product_id: product.id) }
+    let(:other_cart_item) { Shop::Models::CartItem.new(product_id: product.id) }
+
+    describe '#==' do
+      context 'with other Models::CartItem of the same id' do
+        it 'returns true' do
+          expect(cart_item == other_cart_item).to be true
+        end
+      end
+
+      context 'with another Models::* of the same id' do
+        it 'returns false' do
+          expect(cart_item == product).to be false
+        end
+      end
+    end
+
+    describe '#eql?' do
+      context 'with other Models::CartItem of the same id' do
+        it 'returns true' do
+          expect(cart_item.eql?(other_cart_item)).to be true
+        end
+      end
+
+      context 'with another Models::* of the same id' do
+        it 'returns false' do
+          expect(cart_item.eql?(product)).to be false
+        end
+      end
+    end
+
+    describe '#equal?' do
+      context 'with other Models::CartItem of the same id' do
+        it 'returns false' do
+          expect(cart_item.equal?(other_cart_item)).to be false
+        end
       end
     end
   end
