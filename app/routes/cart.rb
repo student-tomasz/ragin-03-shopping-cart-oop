@@ -9,7 +9,7 @@ module Shop
       end
 
       post '/cart' do
-        Services::AddOneProductToCart.new.call(product_id: params['product_id'])
+        Services::IncrementCartItem.new.call(product_id: params['product_id'])
         redirect '/cart'
       end
 

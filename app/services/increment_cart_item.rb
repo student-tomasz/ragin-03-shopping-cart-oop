@@ -1,6 +1,6 @@
 module Shop
   module Services
-    class AddOneProductToCart
+    class IncrementCartItem
       def call(product_id:)
         cart_item = FetchCartItem.new.call(product_id: product_id)
         if cart_item
