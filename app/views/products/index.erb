@@ -7,7 +7,7 @@
           <th>Name</th>
           <th class="table-number-column">Price</th>
           <th class="table-number-column">VAT</th>
-          <th>&nbsp;</th>
+          <th class="table-action-column">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +27,7 @@
           <td class="table-number-column">
             <span class="vat">(VAT <%= product.vat %>)</span>
           </td>
-          <td class="table-number-column">
+          <td class="table-action-column">
             <form action="/cart" method="post">
               <input name="product_id" value="<%= product.id %>" type="hidden">
               <input name="submit" value="Add to cart" type="submit" class="btn btn-sm btn-primary">

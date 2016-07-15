@@ -3,26 +3,24 @@
     <table class="table table-hover table-cart">
       <thead class="thead-default">
         <tr>
-          <th class="table-id-column">No.</th>
           <th>Product</th>
           <th class="table-number-column">Unit Price</th>
           <th class="table-number-column">VAT</th>
-          <th class="table-number-column">Quantity</th>
+          <th class="table-action-column">Quantity</th>
           <th class="table-number-column">Subtotal</th>
+          <th class="table-action-column">&nbsp;</th>
         </tr>
       </thead>
       <tfoot>
         <tr class="table-info">
           <th colspan="5" class="table-number-column">Total w/ VAT:</th>
           <th class="table-number-column"><%= cart.total_with_vat %></th>
+          <th class="table-action-column">&nbsp;</th>
         </tr>
       </tfoot>
       <tbody>
       <% cart.items.each_with_index do |cart_item, no| %>
         <tr>
-          <th scope="row" class="table-id-column">
-            <span class="id"><%= no + 1 %>.</span>
-          </th>
           <td>
             <span class="name"><%= cart_item.product.name %></span>
           </td>
@@ -32,7 +30,7 @@
           <td class="table-number-column">
             <span class="vat"><%= cart_item.product.vat %></span>
           </td>
-          <td class="table-number-column">
+          <td class="table-action-column">
             <form action="/cart" method="post">
               <input type="hidden" name="_method" value="put">
               <input type="hidden" name="product_id" value="<%= cart_item.product.id %>">
@@ -42,6 +40,13 @@
           </td>
           <td class="table-number-column">
             <span class="total font-weight-bold"><%= cart_item.total_with_vat %></span>
+          </td>
+          <td class="table-action-column">
+            <form action="/cart" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <input type="hidden" name="product_id" value="<%= cart_item.product.id %>">
+              <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+            </form>
           </td>
         </tr>
       <% end %>

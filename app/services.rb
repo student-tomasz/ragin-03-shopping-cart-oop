@@ -2,6 +2,7 @@ module Shop
   module Services
     autoload :AddOneProductToCart, 'app/services/add_one_product_to_cart'
     autoload :SetProductQuantityInCart, 'app/services/set_product_quantity_in_cart'
+    autoload :RemoveProductFromCart, 'app/services/remove_product_from_cart'
     autoload :FetchCartItems, 'app/services/fetch_cart_items'
     autoload :FetchCartItem, 'app/services/fetch_cart_item'
     autoload :FetchProducts, 'app/services/fetch_products'

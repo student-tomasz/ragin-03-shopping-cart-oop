@@ -20,6 +20,13 @@ module Shop
         )
         redirect '/cart'
       end
+
+      delete '/cart' do
+        Services::RemoveProductFromCart.new.call(
+          product_id: params['product_id']
+        )
+        redirect '/cart'
+      end
     end
   end
 end
