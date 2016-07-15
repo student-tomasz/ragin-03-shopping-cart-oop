@@ -23,19 +23,19 @@ module Shop
             stub_const('Shop::CART_ITEMS', [book_cart_item])
           end
 
-          shared_examples 'raises InvalidProductIdError' do |product_id|
-            it 'raises InvalidProductIdError' do
+          shared_examples 'raises ProductDoesNotExistError' do |product_id|
+            it 'raises ProductDoesNotExistError' do
               expect { IncrementOrCreate.new.call(product_id: product_id) }
-                .to raise_error(IncrementOrCreate::InvalidProductIdError)
+                .to raise_error(IncrementOrCreate::ProductDoesNotExistError)
             end
           end
 
           context 'with nil id' do
-            include_examples 'raises InvalidProductIdError', nil
+            include_examples 'raises ProductDoesNotExistError', nil
           end
 
           context 'with unknown id' do
-            include_examples 'raises InvalidProductIdError', -1
+            include_examples 'raises ProductDoesNotExistError', -1
           end
 
           context 'with valid id' do
