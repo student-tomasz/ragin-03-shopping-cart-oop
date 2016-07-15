@@ -4,7 +4,7 @@ require_relative './cart_item/validator'
 module Shop
   module Models
     class CartItem
-      def initialize(product_id:, quantity: 0)
+      def initialize(product_id:, quantity: 1)
         @product = begin
           Services::Products::Fetch.new.call(product_id: product_id)
         rescue

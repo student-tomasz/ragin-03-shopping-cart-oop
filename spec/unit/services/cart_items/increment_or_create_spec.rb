@@ -34,7 +34,7 @@ module Shop
             it 'increments the CartItem#quantity' do
               expect { IncrementOrCreate.new.call(product_id: in_cart_product.id) }
                 .to change { Fetch.new.call(product_id: in_cart_product.id).quantity }
-                .from(0).to(1)
+                .from(1).to(2)
             end
           end
         end

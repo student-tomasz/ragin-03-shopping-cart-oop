@@ -10,19 +10,23 @@ module Shop
 
         def validate!
           raise CartItem::InvalidProductIdError unless product_id_valid?
-          raise CartItem::InvalidQuantityError unless quantity_valid?
+          raise CartItem::InvalidQuantityTypeError unless quantity_type_valid?
+          raise CartItem::InvalidQuantityValueError unless quantity_value_valid?
         end
 
         private
 
         def product_id_valid?
-          product = @cart_item.product
-          !product.nil?
+          !@cart_item.product.nil?
         end
 
-        def quantity_valid?
+        def quantity_type_valid?
           quantity = @cart_item.quantity
-          !quantity.nil? && quantity.is_a?(Integer) && quantity >= 0
+          !quantity.nil? && quantity.is_a?(Integer)
+        end
+
+        def quantity_value_valid?
+          @cart_item.quantity > 0
         end
       end
     end

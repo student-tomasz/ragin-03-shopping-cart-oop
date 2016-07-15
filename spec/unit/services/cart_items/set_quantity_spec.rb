@@ -59,7 +59,7 @@ module Shop
             it 'updates the CartItem#quantity' do
               expect { SetQuantity.new.call(product_id: in_cart_product.id, quantity: 17) }
                 .to change { Fetch.new.call(product_id: in_cart_product.id).quantity }
-                .from(0).to(17)
+                  .from(1).to(17)
             end
           end
         end
