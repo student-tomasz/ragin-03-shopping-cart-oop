@@ -14,8 +14,7 @@ module Shop
         Validator.new(self).validate!
       end
 
-      attr_reader :product
-      attr_accessor :quantity
+      attr_reader :product, :quantity
 
       def total
         product.price * @quantity
