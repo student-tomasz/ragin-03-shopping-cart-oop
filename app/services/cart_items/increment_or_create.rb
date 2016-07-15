@@ -10,7 +10,6 @@ module Shop
             cart_item = create! product_id
             persist cart_item
           end
-          cart_item
         end
 
         private
@@ -36,6 +35,7 @@ module Shop
 
         def persist(cart_item)
           CART_ITEMS << cart_item
+          cart_item
         end
       end
     end
