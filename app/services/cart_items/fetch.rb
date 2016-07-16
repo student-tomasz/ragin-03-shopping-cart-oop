@@ -3,9 +3,11 @@ module Shop
     module CartItems
       class Fetch
         def call(product_id:)
-          cart_item = CART_ITEMS.find { |cart_item| cart_item.product.id == product_id }
-          raise CartItems::CartItemDoesNotExistError if cart_item.nil?
-          cart_item
+          found_cart_item = CART_ITEMS.find do |cart_item|
+            cart_item.product.id == product_id
+          end
+          raise CartItems::CartItemDoesNotExistError if found_cart_item.nil?
+          found_cart_item
         end
       end
     end

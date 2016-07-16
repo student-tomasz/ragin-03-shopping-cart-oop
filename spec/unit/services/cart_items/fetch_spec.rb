@@ -21,7 +21,9 @@ module Shop
           end
 
           context "with an existing Product's id that's not in the cart" do
-            include_examples 'raises CartItems::CartItemDoesNotExistError', 6 # not_in_cart_product.id
+            # As the `not_in_cart_product.id` is unavailable in this scope I've
+            # had to use its literal value.
+            include_examples 'raises CartItems::CartItemDoesNotExistError', 6
           end
 
           context 'with a valid id' do
