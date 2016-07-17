@@ -1,3 +1,4 @@
+require_relative './cart/exceptions'
 require_relative './cart/validator'
 
 module Shop

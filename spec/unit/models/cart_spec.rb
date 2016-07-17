@@ -3,14 +3,21 @@ RSpec.describe Shop::Models::Cart do
     context 'with nil' do
       it 'raises an error' do
         expect { Shop::Models::Cart.new(nil) }
-          .to raise_error(ArgumentError)
+          .to raise_error(Shop::Models::Cart::InvalidCartItemsTypeError)
+      end
+    end
+
+    context 'with anything other than an Array' do
+      it 'raises an error' do
+        expect { Shop::Models::Cart.new(Object.new) }
+          .to raise_error(Shop::Models::Cart::InvalidCartItemsTypeError)
       end
     end
 
     context 'with an array containing anything other than Models::CartItem' do
       it 'raises an error' do
         expect { Shop::Models::Cart.new([Object.new]) }
-          .to raise_error(ArgumentError)
+          .to raise_error(Shop::Models::Cart::InvalidCartItemsTypeError)
       end
     end
 

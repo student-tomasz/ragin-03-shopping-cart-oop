@@ -9,32 +9,38 @@ module Shop
         end
 
         def validate!
-          raise Product::InvalidIdError unless id_valid?
-          raise Product::InvalidNameError unless name_valid?
-          raise Product::InvalidPriceError unless price_valid?
-          raise Product::InvalidVatError unless vat_valid?
+          id_valid?
+          name_valid?
+          price_valid?
+          vat_valid?
         end
 
         private
 
         def id_valid?
-          id = @product.id
-          !id.nil?
+          raise Product::InvalidIdError unless @product.id
         end
 
         def name_valid?
-          name = @product.name
-          !name.nil? && name.is_a?(String) && !name.empty? && name.length >= 2
+          [
+            ->(name) { name.is_a?(String) },
+            ->(name) { !name.empty? }
+          ].each do |test|
+            raise Product::InvalidNameError unless test.call(@product.name)
+          end
         end
 
         def price_valid?
-          price = @product.price
-          !price.nil? && price.is_a?(Integer) && price >= 0
+          [
+            ->(price) { price.is_a?(Integer) },
+            ->(price) { price >= 0 }
+          ].each do |test|
+            raise Product::InvalidPriceError unless test.call(@product.price)
+          end
         end
 
         def vat_valid?
-          vat = @product.vat
-          !vat.nil? && vat.is_a?(Float)
+          raise Product::InvalidVatError unless @product.vat.is_a?(Float)
         end
       end
     end

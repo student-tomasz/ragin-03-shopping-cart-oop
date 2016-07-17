@@ -1,23 +1,24 @@
 module Shop
   module Models
     class Cart
+      include Exceptions
+
       class Validator
         def initialize(cart)
           @cart = cart
         end
 
         def validate!
-          raise ArgumentError if @cart.items.nil?
-          raise ArgumentError unless cart_items_only?
+          cart_items_only?
         end
 
         private
 
         def cart_items_only?
+          raise Cart::InvalidCartItemsTypeError unless @cart.items.is_a?(Array)
           @cart.items.each do |item|
-            return false unless item.is_a?(CartItem)
+            raise Cart::InvalidCartItemsTypeError unless item.is_a?(CartItem)
           end
-          true
         end
       end
     end
