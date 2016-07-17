@@ -36,7 +36,6 @@ module Shop
       def eql?(other)
         other.instance_of?(self.class) && other.product.id == product.id
       end
-
       alias == eql?
     end
   end

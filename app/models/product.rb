@@ -33,7 +33,6 @@ module Shop
       def eql?(other)
         other.instance_of?(self.class) && other.id == id
       end
-
       alias == eql?
 
       private
