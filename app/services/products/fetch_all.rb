@@ -3,7 +3,7 @@ module Shop
     module Products
       class FetchAll
         def call
-          PRODUCTS || []
+          ::Shop::PRODUCTS ||= []
         end
       end
     end

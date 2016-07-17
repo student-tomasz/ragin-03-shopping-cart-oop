@@ -3,7 +3,7 @@ module Shop
     module CartItems
       class FetchAll
         def call
-          CART_ITEMS || []
+          ::Shop::CART_ITEMS ||= []
         end
       end
     end
