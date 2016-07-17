@@ -6,6 +6,15 @@ RSpec.configure do |config|
   # Enables colors in output.
   config.color = true
 
+  # This configuration allows you to filter to specific examples or groups by tagging
+  # them with :focus metadata. When no example or groups are focused (which should be
+  # the norm since it's intended to be a temporary change), the filter will be ignored.
+  #
+  # RSpec also provides aliases--fit, fdescribe and fcontext--as a shorthand for
+  # it, describe and context with :focus metadata, making it easy to temporarily
+  # focus an example or group by prefixing an f.
+  config.filter_run_when_matching :focus
+
   # Limits the available syntax to the non-monkey patched syntax that is
   # recommended. For more details, see:
   #   - http://rspec.info/blog/2012/06/rspecs-new-expectation-syntax/

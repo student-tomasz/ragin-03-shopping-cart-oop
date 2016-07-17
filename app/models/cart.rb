@@ -1,8 +1,12 @@
+require_relative './cart/exceptions'
+require_relative './cart/validator'
+
 module Shop
   module Models
     class Cart
       def initialize(items)
         @items = items
+        Validator.new(self).validate!
       end
 
       attr_reader :items

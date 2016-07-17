@@ -29,12 +29,6 @@ RSpec.describe Shop::Models::Product do
 
         include_examples 'raises error', Shop::Models::Product::InvalidNameError
       end
-
-      context 'shorter than 2 characters' do
-        let(:invalid_params) { params.merge!(name: 'a') }
-
-        include_examples 'raises error', Shop::Models::Product::InvalidNameError
-      end
     end
 
     context "with invalid price that's" do

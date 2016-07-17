@@ -1,52 +1,52 @@
 {
   "products": [
     {
-      "id": 1,
+      "id": "37cd32d8-5fe8-4996-afb7-186b02150db0",
       "name": "Agile Web Development with Rails 5",
       "price": 2800,
       "vat_id": 2
     }, {
-      "id": 2,
+      "id": "1a24f953-6c39-4612-943c-0fae8089435d",
       "name": "Data Science Essentials in Python",
       "price": 1900,
       "vat_id": 2
     }, {
-      "id": 3,
+      "id": "f5761dab-7d5c-45fa-9900-b0beb757f97b",
       "name": "Web Development with Clojure, Second Edition",
       "price": 2400,
       "vat_id": 2
     }, {
-      "id": 4,
+      "id": "e8cf9515-532b-41fe-88c9-278c74281d2c",
       "name": "Serverless Single Page Apps",
       "price": 3000,
       "vat_id": 2
     }, {
-      "id": 5,
+      "id": "7203b3a1-9fc3-4476-abab-9de04ad7cc45",
       "name": "Deploying with JRuby 9k",
       "price": 1600,
       "vat_id": 2
     }, {
-      "id": 6,
+      "id": "5d24dc2b-18dc-430f-b703-521d108a52be",
       "name": "Pragmatic T-Shirt",
       "price": 900,
       "vat_id": 1
     }
   ],
-  "cart": [
+  "cart_items": [
     {
-      "product_id": 1,
+      "product_id": "37cd32d8-5fe8-4996-afb7-186b02150db0",
       "quantity": 17
     }, {
-      "product_id": 3,
+      "product_id": "f5761dab-7d5c-45fa-9900-b0beb757f97b",
       "quantity": 8
     }, {
-      "product_id": 4,
+      "product_id": "e8cf9515-532b-41fe-88c9-278c74281d2c",
       "quantity": 1
     }, {
-      "product_id": 5,
+      "product_id": "7203b3a1-9fc3-4476-abab-9de04ad7cc45",
       "quantity": 1
     }, {
-      "product_id": 6,
+      "product_id": "5d24dc2b-18dc-430f-b703-521d108a52be",
       "quantity": 2
     }
   ]

@@ -1,42 +1,52 @@
 <div class="container">
   <div class="row">
-    <table class="table table-hover">
+    <table class="table table-hover table-cart">
       <thead class="thead-default">
         <tr>
-          <th width="5%" class="text-xs-right">No.</th>
           <th>Product</th>
-          <th width="10%" class="text-xs-right">Unit Price</th>
-          <th width="10%" class="text-xs-right">VAT</th>
-          <th width="10%" class="text-xs-right">Quantity</th>
-          <th width="10%" class="text-xs-right">Subtotal</th>
+          <th class="table-number-column">Unit Price</th>
+          <th class="table-number-column">VAT</th>
+          <th class="table-action-column">Quantity</th>
+          <th class="table-number-column">Subtotal</th>
+          <th class="table-action-column">&nbsp;</th>
         </tr>
       </thead>
       <tfoot>
         <tr class="table-info">
-          <th colspan="5" class="text-xs-right">Total w/ VAT:</th>
-          <th class="text-xs-right"><%= cart.total_with_vat %></th>
+          <th colspan="5" class="table-number-column">Total w/ VAT:</th>
+          <th class="table-number-column"><%= cart.total_with_vat %></th>
+          <th class="table-action-column">&nbsp;</th>
         </tr>
       </tfoot>
       <tbody>
       <% cart.items.each_with_index do |cart_item, no| %>
         <tr>
-          <th scope="row" class="text-xs-right">
-            <span class="id"><%= no + 1 %>.</span>
-          </th>
           <td>
             <span class="name"><%= cart_item.product.name %></span>
           </td>
-          <td class="text-xs-right">
+          <td class="table-number-column">
             <span class="price"><%= cart_item.product.price_with_vat %></span>
           </td>
-          <td class="text-xs-right">
+          <td class="table-number-column">
             <span class="vat"><%= cart_item.product.vat %></span>
           </td>
-          <td class="text-xs-right">
-            <span class="quantity"><%= cart_item.quantity %></span>
+          <td class="table-action-column">
+            <form action="/cart" method="post">
+              <input type="hidden" name="_method" value="put">
+              <input type="hidden" name="product_id" value="<%= cart_item.product.id %>">
+              <input type="number" name="quantity" value="<%= cart_item.quantity %>">
+              <button type="submit" class="btn btn-sm">Update</button>
+            </form>
           </td>
-          <td class="text-xs-right">
+          <td class="table-number-column">
             <span class="total font-weight-bold"><%= cart_item.total_with_vat %></span>
+          </td>
+          <td class="table-action-column">
+            <form action="/cart" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <input type="hidden" name="product_id" value="<%= cart_item.product.id %>">
+              <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+            </form>
           </td>
         </tr>
       <% end %>
